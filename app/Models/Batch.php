@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Carbon\Carbon;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Batch extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = [
         'medicine_id',
@@ -27,6 +28,15 @@ class Batch extends Model
         ];
     }
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['medicine_id', 'supplier_id', 'quantity', 'remaining_quantity', 'purchase_price', 'expiry_date'])
+            ->logOnlyDirty()
+            ->useLogName('batch')
+            ->dontSubmitEmptyLogs();
+    }
+
     public function medicine()
     {
         return $this->belongsTo(Medicine::class);
@@ -42,7 +52,6 @@ class Batch extends Model
         return $this->hasMany(SaleItem::class);
     }
 
-    // Expiry status: safe, warning, danger, expired
     public function getExpiryStatusAttribute(): string
     {
         $daysUntilExpiry = now()->diffInDays($this->expiry_date, false);

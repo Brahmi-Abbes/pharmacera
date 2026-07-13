@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 
 class Sale extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $fillable = ['user_id', 'total', 'payment_method'];
 
@@ -16,6 +18,15 @@ class Sale extends Model
         return [
             'total' => 'decimal:2',
         ];
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['total', 'payment_method', 'user_id'])
+            ->logOnlyDirty()
+            ->useLogName('sale')
+            ->dontSubmitEmptyLogs();
     }
 
     public function user()
