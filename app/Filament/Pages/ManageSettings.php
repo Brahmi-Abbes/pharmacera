@@ -7,13 +7,9 @@ use BackedEnum;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
-use Filament\Schemas\Components\Form;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 
-/**
- * @property-read Schema $form
- */
 class ManageSettings extends Page
 {
     protected string $view = 'filament.pages.manage-settings';
@@ -29,7 +25,6 @@ class ManageSettings extends Page
 
     public static function canAccess(): bool
     {
-        // Store details / tax rate are admin-only concerns.
         return auth()->user()?->hasRole('admin') ?? false;
     }
 
@@ -42,30 +37,28 @@ class ManageSettings extends Page
     {
         return $schema
             ->components([
-                Form::make([
-                    TextInput::make('store_name')
-                        ->label('Store name')
-                        ->required()
-                        ->maxLength(255),
-                    TextInput::make('currency')
-                        ->required()
-                        ->maxLength(10)
-                        ->helperText('e.g. DZD, USD, EUR'),
-                    TextInput::make('phone')
-                        ->tel()
-                        ->maxLength(255),
-                    TextInput::make('address')
-                        ->maxLength(255),
-                    TextInput::make('tax_rate')
-                        ->label('Tax rate (%)')
-                        ->numeric()
-                        ->minValue(0)
-                        ->maxValue(100)
-                        ->suffix('%'),
-                ])
-                    ->columns(2)
-                    ->statePath('data'),
-            ]);
+                TextInput::make('store_name')
+                    ->label('Store name')
+                    ->required()
+                    ->maxLength(255),
+                TextInput::make('currency')
+                    ->required()
+                    ->maxLength(10)
+                    ->helperText('e.g. DZD, USD, EUR'),
+                TextInput::make('phone')
+                    ->tel()
+                    ->maxLength(255),
+                TextInput::make('address')
+                    ->maxLength(255),
+                TextInput::make('tax_rate')
+                    ->label('Tax rate (%)')
+                    ->numeric()
+                    ->minValue(0)
+                    ->maxValue(100)
+                    ->suffix('%'),
+            ])
+            ->columns(2)
+            ->statePath('data');
     }
 
     protected function getRecord(): Setting

@@ -11,7 +11,6 @@ use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,7 +18,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
 
-        // Extra staff accounts on top of the admin RoleSeeder creates
         $pharmacist = User::firstOrCreate(
             ['email' => 'pharmacist@pharmacera.test'],
             ['name' => 'Amina Belkacem', 'password' => Hash::make('password'), 'email_verified_at' => now()]
@@ -31,6 +29,14 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Yacine Kaci', 'password' => Hash::make('password'), 'email_verified_at' => now()]
         );
         $cashier->assignRole('cashier');
+
+        // Guard the whole "demo data" block: only generate it once. Re-running
+        // `db:seed` without wiping first used to stack duplicate batches/sales
+        // on top of what already existed — this stops that.
+        if (Batch::query()->exists() || Sale::query()->exists()) {
+            $this->command->info('Demo data already exists — skipping. Run `php artisan migrate:fresh --seed` for a clean slate.');
+            return;
+        }
 
         // Categories
         $categories = collect(['Antibiotics', 'Painkillers', 'Vitamins', 'Cold & Flu', 'Digestive', 'Dermatology'])
@@ -92,7 +98,10 @@ class DatabaseSeeder extends Seeder
             }
         });
 
-        // Sales — last 14 days, random medicines, deducting real stock
+        // Sales — last 14 days, random medicines, deducting real stock.
+        // NOTE: SaleItem::create() below already triggers SaleItemObserver,
+        // which decrements the batch automatically — do NOT decrement again
+        // here, that was the bug causing negative stock.
         $users = collect([$pharmacist, $cashier]);
 
         for ($i = 0; $i < 40; $i++) {
@@ -104,19 +113,22 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $total = 0;
-            $itemCount = rand(1, 3);
 
-            foreach ($medicines->random($itemCount) as $medicine) {
+            foreach ($medicines->random(rand(1, 3)) as $medicine) {
                 $batch = $medicine->batches()
                     ->where('remaining_quantity', '>', 0)
                     ->orderBy('expiry_date')
                     ->first();
 
-                if (! $batch) continue;
+                if (! $batch) {
+                    continue;
+                }
 
                 $qty = min(rand(1, 3), $batch->remaining_quantity);
                 $subtotal = $qty * $medicine->selling_price;
 
+                // Creating this fires SaleItemObserver::created(), which already
+                // deducts $qty from the batch — no manual decrement needed here.
                 SaleItem::create([
                     'sale_id'     => $sale->id,
                     'batch_id'    => $batch->id,
@@ -126,7 +138,6 @@ class DatabaseSeeder extends Seeder
                     'subtotal'    => $subtotal,
                 ]);
 
-                $batch->decrement('remaining_quantity', $qty);
                 $total += $subtotal;
             }
 
