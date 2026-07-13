@@ -33,7 +33,7 @@ class SaleItem extends Model
             ->logOnly(['sale_id', 'batch_id', 'medicine_id', 'quantity', 'unit_price', 'subtotal'])
             ->logOnlyDirty()
             ->useLogName('sale_item')
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function sale()

@@ -35,12 +35,12 @@ class ActivityLogInfolist
                     ]),
                 Section::make('What changed')
                     ->schema([
-                        KeyValueEntry::make('properties.old')
+                        KeyValueEntry::make('attribute_changes.old')
                             ->label('Before')
-                            ->visible(fn ($record) => filled($record->properties['old'] ?? null)),
-                        KeyValueEntry::make('properties.attributes')
+                            ->visible(fn ($record) => filled($record->attribute_changes['old'] ?? null)),
+                        KeyValueEntry::make('attribute_changes.attributes')
                             ->label('After')
-                            ->visible(fn ($record) => filled($record->properties['attributes'] ?? null)),
+                            ->visible(fn ($record) => filled($record->attribute_changes['attributes'] ?? null)),
                     ]),
             ]);
     }

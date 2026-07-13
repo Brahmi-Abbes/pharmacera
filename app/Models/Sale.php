@@ -26,7 +26,7 @@ class Sale extends Model
             ->logOnly(['total', 'payment_method', 'user_id'])
             ->logOnlyDirty()
             ->useLogName('sale')
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function user()

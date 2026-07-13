@@ -67,4 +67,8 @@ class SaleResource extends Resource
     {
         return auth()->user()?->hasRole('admin') ?? false;
     }
+    public static function canDeleteAny(): bool
+    {
+        return auth()->user()?->hasRole('admin') ?? false;
+    }
 }

@@ -40,7 +40,12 @@ class BatchForm
                 TextInput::make('remaining_quantity')
                     ->required()
                     ->numeric()
-                    ->minValue(0),
+                    ->minValue(0)
+                    // Can never physically have more left than you originally received.
+                    ->lte('quantity')
+                    ->validationMessages([
+                        'lte' => 'Remaining quantity cannot be more than the quantity received.',
+                    ]),
                 TextInput::make('purchase_price')
                     ->required()
                     ->numeric()

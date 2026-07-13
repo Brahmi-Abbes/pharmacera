@@ -57,11 +57,13 @@ class SalesTable
                     ]),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'cashier']) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
                 ]),
             ]);
     }

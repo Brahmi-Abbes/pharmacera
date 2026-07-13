@@ -34,7 +34,7 @@ class Batch extends Model
             ->logOnly(['medicine_id', 'supplier_id', 'quantity', 'remaining_quantity', 'purchase_price', 'expiry_date'])
             ->logOnlyDirty()
             ->useLogName('batch')
-            ->dontSubmitEmptyLogs();
+            ->dontLogEmptyChanges();
     }
 
     public function medicine()
