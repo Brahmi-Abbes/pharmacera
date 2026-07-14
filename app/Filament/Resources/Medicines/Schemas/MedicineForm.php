@@ -26,6 +26,8 @@ class MedicineForm
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                // MedicineForm.php
+                TextInput::make('barcode')->unique(ignoreRecord: true)->maxLength(255),
                 TextInput::make('generic_name')
                     ->maxLength(255)
                     ->default(null),

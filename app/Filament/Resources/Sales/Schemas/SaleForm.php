@@ -10,6 +10,9 @@ use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use App\Support\SaleCart;
+use Filament\Notifications\Notification;
+
 
 class SaleForm
 {
@@ -31,6 +34,41 @@ class SaleForm
                     ])
                     ->default('cash')
                     ->required(),
+                    TextInput::make('barcode_scan')
+    ->label('Scan barcode')
+    ->placeholder('Click here, then scan — or type a barcode and press Enter')
+    ->live(onBlur: true)
+    ->extraInputAttributes([
+        'autofocus' => true,
+        'x-on:keydown.enter.prevent' => '$el.blur()',
+    ])
+    ->dehydrated(false)
+    ->afterStateUpdated(function (?string $state, Get $get, Set $set) {
+        if (blank($state)) {
+            return;
+        }
+
+        $medicine = Medicine::findByBarcode($state);
+
+        if (! $medicine) {
+            Notification::make()->title('No medicine found for that barcode')->danger()->send();
+            return $set('barcode_scan', null);
+        }
+
+        $batch = $medicine->nextAvailableBatch();
+
+        if (! $batch) {
+            Notification::make()->title("No stock left for {$medicine->name}")->danger()->send();
+            return $set('barcode_scan', null);
+        }
+
+        $items = SaleCart::addOrIncrement($get('items') ?? [], $medicine->id, $batch->id, $medicine->selling_price, $batch->remaining_quantity);
+
+        $set('items', $items);
+        $set('total', SaleCart::total($items));
+        $set('barcode_scan', null);
+    })
+    ->columnSpanFull(),
                 Repeater::make('items')
                     ->relationship()
                     ->live()

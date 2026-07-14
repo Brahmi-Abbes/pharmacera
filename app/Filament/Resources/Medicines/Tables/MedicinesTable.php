@@ -46,6 +46,8 @@ class MedicinesTable
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                // MedicinesTable.php
+                TextColumn::make('barcode')->searchable()->toggleable(isToggledHiddenByDefault: true),  
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

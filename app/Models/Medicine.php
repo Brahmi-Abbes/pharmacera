@@ -63,4 +63,18 @@ class Medicine extends Model
             ->orderBy('expiry_date')
             ->value('expiry_date');
     }
+    // app/Models/Medicine.php
+
+    public static function findByBarcode(string $barcode): ?self
+    {
+        return static::where('barcode', trim($barcode))->first();
+    }
+
+    public function nextAvailableBatch(): ?Batch
+    {
+        return $this->batches()
+            ->where('remaining_quantity', '>', 0)
+            ->orderBy('expiry_date')
+            ->first();
+    }
 }
