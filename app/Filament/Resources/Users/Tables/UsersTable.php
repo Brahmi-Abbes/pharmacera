@@ -40,11 +40,13 @@ class UsersTable
                     ->relationship('roles', 'name'),
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
                 ]),
             ]);
     }

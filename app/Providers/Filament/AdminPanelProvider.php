@@ -25,6 +25,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->brandName('Pharmacera')
             ->login()
             ->colors([
                 'primary' => Color::Emerald,

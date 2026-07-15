@@ -26,7 +26,7 @@ class SaleItemObserver
 
     public function created(SaleItem $saleItem): void
     {
-        $saleItem->batch()->decrement('remaining_quantity', $saleItem->quantity);
+        $this->adjustBatchStock($saleItem->batch_id, -$saleItem->quantity);
     }
 
     /**
@@ -42,13 +42,14 @@ class SaleItemObserver
         $originalBatchId = $saleItem->getOriginal('batch_id');
         $originalQuantity = $saleItem->getOriginal('quantity');
 
-        Batch::whereKey($originalBatchId)->increment('remaining_quantity', $originalQuantity);
+        // Temporarily restore the old batch's stock so we can validate against it cleanly.
+        $this->adjustBatchStock($originalBatchId, $originalQuantity);
 
         $newBatch = Batch::whereKey($saleItem->batch_id)->lockForUpdate()->first();
 
         if (! $newBatch || $newBatch->remaining_quantity < $saleItem->quantity) {
             // Roll back the temporary restore before failing.
-            Batch::whereKey($originalBatchId)->decrement('remaining_quantity', $originalQuantity);
+            $this->adjustBatchStock($originalBatchId, -$originalQuantity);
 
             throw ValidationException::withMessages([
                 'batch_id' => "Only {$newBatch?->remaining_quantity} left in that batch — reduce the quantity or pick another batch.",
@@ -59,12 +60,30 @@ class SaleItemObserver
     public function updated(SaleItem $saleItem): void
     {
         if ($saleItem->wasChanged('quantity') || $saleItem->wasChanged('batch_id')) {
-            $saleItem->batch()->decrement('remaining_quantity', $saleItem->quantity);
+            $this->adjustBatchStock($saleItem->batch_id, -$saleItem->quantity);
         }
     }
 
     public function deleted(SaleItem $saleItem): void
     {
-        $saleItem->batch()->increment('remaining_quantity', $saleItem->quantity);
+        $this->adjustBatchStock($saleItem->batch_id, $saleItem->quantity);
+    }
+
+    /**
+     * Load the batch, mutate remaining_quantity, and save() it — deliberately
+     * NOT using decrement()/increment() on the query builder, because those
+     * bypass Eloquent model events and would leave LogsActivity blind to
+     * every stock change caused by a sale.
+     */
+    private function adjustBatchStock(int $batchId, int $delta): void
+    {
+        $batch = Batch::whereKey($batchId)->lockForUpdate()->first();
+
+        if (! $batch) {
+            return;
+        }
+
+        $batch->remaining_quantity = $batch->remaining_quantity + $delta;
+        $batch->save();
     }
 }

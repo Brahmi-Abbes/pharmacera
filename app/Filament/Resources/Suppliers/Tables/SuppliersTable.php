@@ -42,7 +42,8 @@ class SuppliersTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
