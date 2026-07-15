@@ -13,9 +13,10 @@ use Filament\Schemas\Schema;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\DatePicker;
 use Filament\Pages\Page;
-use Filament\Actions\Action;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Carbon;
+use BackedEnum;
+use Filament\Support\Icons\Heroicon;
 
 class Reports extends Page implements HasForms
 {
@@ -23,7 +24,18 @@ class Reports extends Page implements HasForms
 
     protected string $view = 'filament.pages.reports';
 
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedDocumentChartBar;
+
+    protected static ?string $navigationLabel = 'Reports';
+
     public ?array $data = [];
+
+    public static function canAccess(): bool
+    {
+        // Revenue, staff performance, and stock valuation are owner/admin-level
+        // data — a cashier should never be able to pull this up.
+        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
+    }
 
     public function mount(): void
     {
@@ -55,16 +67,6 @@ class Reports extends Page implements HasForms
                     ->required(),
             ])
             ->statePath('data');
-    }
-
-    public function getFormActions(): array
-    {
-        return [
-            Action::make('generate')
-                ->label('Generate PDF')
-                ->icon('heroicon-o-document-arrow-down')
-                ->action('generate'),
-        ];
     }
 
     public function generate()

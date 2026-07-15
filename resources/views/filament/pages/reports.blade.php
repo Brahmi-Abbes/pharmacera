@@ -2,8 +2,10 @@
     <form wire:submit="generate">
         {{ $this->form }}
 
-        <button type="submit" class="fi-btn fi-btn-size-lg fi-color-primary fi-btn-color-primary mt-4">
-            Generate PDF
-        </button>
+        <div class="mt-4">
+            <x-filament::button type="submit" icon="heroicon-o-document-arrow-down">
+                Generate PDF
+            </x-filament::button>
+        </div>
     </form>
 </x-filament-panels::page>
