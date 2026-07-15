@@ -22,6 +22,16 @@ class SaleResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.sales');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('pharmacy.model.sale');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return SaleForm::configure($schema);

@@ -23,6 +23,16 @@ class SupplierResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.suppliers');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('pharmacy.model.supplier');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return SupplierForm::configure($schema);

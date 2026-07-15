@@ -22,6 +22,16 @@ class BatchResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'id';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.batches');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('pharmacy.model.batch');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return BatchForm::configure($schema);

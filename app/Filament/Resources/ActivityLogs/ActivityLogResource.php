@@ -19,9 +19,15 @@ class ActivityLogResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
 
-    protected static ?string $navigationLabel = 'Activity Log';
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.activity_log');
+    }
 
-    protected static ?string $modelLabel = 'Activity';
+    public static function getModelLabel(): string
+    {
+        return __('pharmacy.nav.activity_log');
+    }
 
     public static function table(Table $table): Table
     {

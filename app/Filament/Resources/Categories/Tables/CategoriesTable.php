@@ -15,17 +15,20 @@ class CategoriesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('pharmacy.category.name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('medicines_count')
-                    ->label('Medicines')
+                    ->label(__('pharmacy.category.medicines_count'))
                     ->counts('medicines')
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

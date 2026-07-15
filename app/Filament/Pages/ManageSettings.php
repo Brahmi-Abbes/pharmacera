@@ -16,7 +16,10 @@ class ManageSettings extends Page
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCog6Tooth;
 
-    protected static ?string $navigationLabel = 'Settings';
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.settings');
+    }
 
     /**
      * @var array<string, mixed>|null
@@ -71,7 +74,7 @@ class ManageSettings extends Page
         $this->getRecord()->update($this->form->getState());
 
         Notification::make()
-            ->title('Settings saved')
+            ->title(__('pharmacy.settings.saved_title'))
             ->success()
             ->send();
     }

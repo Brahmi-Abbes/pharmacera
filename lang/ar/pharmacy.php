@@ -1,0 +1,142 @@
+<?php
+
+return [
+
+    'nav' => [
+        'dashboard' => 'لوحة التحكم',
+        'categories' => 'الفئات',
+        'medicines' => 'الأدوية',
+        'suppliers' => 'الموردون',
+        'batches' => 'الدفعات',
+        'sales' => 'المبيعات',
+        'users' => 'المستخدمون',
+        'activity_log' => 'سجل النشاط',
+        'settings' => 'الإعدادات',
+        'reports' => 'التقارير',
+    ],
+
+    'model' => [
+        'category' => 'فئة',
+        'medicine' => 'دواء',
+        'supplier' => 'مورد',
+        'batch' => 'دفعة',
+        'sale' => 'عملية بيع',
+        'user' => 'مستخدم',
+    ],
+
+    'category' => [
+        'name' => 'الاسم',
+        'medicines_count' => 'عدد الأدوية',
+        'created_at' => 'تاريخ الإنشاء',
+        'updated_at' => 'تاريخ التعديل',
+    ],
+
+    'medicine' => [
+        'category' => 'الفئة',
+        'uncategorized' => 'بدون فئة',
+        'name' => 'الاسم',
+        'generic_name' => 'الاسم العلمي',
+        'barcode' => 'الرمز الشريطي',
+        'unit' => 'الوحدة',
+        'selling_price' => 'سعر البيع',
+        'purchase_price' => 'سعر الشراء',
+        'alert_threshold' => 'حد التنبيه',
+        'stock' => 'المخزون',
+    ],
+
+    'supplier' => [
+        'name' => 'الاسم',
+        'phone' => 'الهاتف',
+        'wilaya' => 'الولاية',
+        'email' => 'البريد الإلكتروني',
+        'batches_count' => 'الدفعات الموردة',
+    ],
+
+    'batch' => [
+        'medicine' => 'الدواء',
+        'supplier' => 'المورد',
+        'quantity' => 'الكمية',
+        'remaining_quantity' => 'الكمية المتبقية',
+        'purchase_price' => 'سعر الشراء',
+        'expiry_date' => 'تاريخ انتهاء الصلاحية',
+        'stock_status' => 'حالة المخزون',
+        'in_stock' => 'متوفر',
+        'empty' => 'نافذ',
+        'all' => 'الكل',
+    ],
+
+    'sale' => [
+        'sale_number' => 'رقم البيع',
+        'cashier' => 'أمين الصندوق',
+        'items' => 'العناصر',
+        'medicine' => 'الدواء',
+        'batch' => 'الدفعة',
+        'quantity' => 'الكمية',
+        'unit_price' => 'سعر الوحدة',
+        'subtotal' => 'المجموع الفرعي',
+        'total' => 'الإجمالي',
+        'payment_method' => 'طريقة الدفع',
+        'cash' => 'نقدًا',
+        'card' => 'بطاقة',
+        'insurance' => 'تأمين',
+        'barcode_scan' => 'مسح الرمز الشريطي',
+    ],
+
+    'user' => [
+        'name' => 'الاسم',
+        'email' => 'البريد الإلكتروني',
+        'password' => 'كلمة المرور',
+        'password_help' => 'اتركه فارغًا للاحتفاظ بكلمة المرور الحالية عند التعديل.',
+        'role' => 'الدور',
+    ],
+
+    'activity' => [
+        'when' => 'الوقت',
+        'area' => 'القسم',
+        'event' => 'الحدث',
+        'record_number' => 'رقم السجل',
+        'by' => 'بواسطة',
+        'system' => 'النظام',
+        'created' => 'تم الإنشاء',
+        'updated' => 'تم التعديل',
+        'deleted' => 'تم الحذف',
+        'before' => 'قبل',
+        'after' => 'بعد',
+        'what_changed' => 'ما الذي تغيّر',
+        'details' => 'التفاصيل',
+        'changed_by' => 'عدّله',
+        'model' => 'النموذج',
+    ],
+
+    'settings' => [
+        'title' => 'إدارة الإعدادات',
+        'store_name' => 'اسم الصيدلية',
+        'currency' => 'العملة',
+        'currency_help' => 'مثال: DZD, USD, EUR',
+        'phone' => 'الهاتف',
+        'address' => 'العنوان',
+        'tax_rate' => 'نسبة الضريبة (%)',
+        'save' => 'حفظ الإعدادات',
+        'saved_title' => 'تم حفظ الإعدادات',
+    ],
+
+    'reports' => [
+        'title' => 'التقارير',
+        'period' => 'الفترة',
+        'daily' => 'يومي',
+        'monthly' => 'شهري',
+        'date' => 'التاريخ',
+        'generate' => 'إنشاء PDF',
+    ],
+
+    'actions' => [
+        'edit' => 'تعديل',
+        'view' => 'عرض',
+        'delete' => 'حذف',
+        'delete_selected' => 'حذف المحدد',
+        'new' => 'جديد',
+        'save' => 'حفظ',
+        'cancel' => 'إلغاء',
+    ],
+
+];

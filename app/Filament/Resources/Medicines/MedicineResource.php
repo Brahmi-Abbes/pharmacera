@@ -23,6 +23,16 @@ class MedicineResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.medicines');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('pharmacy.model.medicine');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return MedicineForm::configure($schema);

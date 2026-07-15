@@ -22,6 +22,16 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('pharmacy.nav.users');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('pharmacy.model.user');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

@@ -12,6 +12,7 @@ class CategoryForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('pharmacy.category.name'))
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
