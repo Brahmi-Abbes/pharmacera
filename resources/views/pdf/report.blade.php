@@ -104,7 +104,7 @@
             @forelse($lowStock as $medicine)
                 <tr>
                     <td>{{ $medicine->name }}</td>
-                    <td class="danger">{{ $medicine->total_stock }}</td>
+                    <td class="danger">{{ $medicine->stock_sum }}</td>
                     <td>{{ $medicine->alert_threshold }}</td>
                 </tr>
             @empty

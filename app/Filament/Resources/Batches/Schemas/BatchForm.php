@@ -50,7 +50,7 @@ class BatchForm
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->prefix('$'),
+                    ->prefix('DZD '),
                 DatePicker::make('expiry_date')
                     ->required()
                     ->native(false),

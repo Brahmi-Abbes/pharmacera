@@ -35,7 +35,7 @@ class BatchesRelationManager extends RelationManager
                 TextInput::make('purchase_price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('DZD '),
                 DatePicker::make('expiry_date')
                     ->required(),
             ]);

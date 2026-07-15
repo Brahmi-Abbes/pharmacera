@@ -38,12 +38,12 @@ class MedicineForm
                 TextInput::make('selling_price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('DZD '),
                 TextInput::make('purchase_price')
                     ->required()
                     ->numeric()
                     ->default(0.0)
-                    ->prefix('$'),
+                    ->prefix('DZD '),
                 TextInput::make('alert_threshold')
                     ->required()
                     ->numeric()

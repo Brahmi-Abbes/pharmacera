@@ -146,7 +146,10 @@ class Reports extends Page implements HasForms
             ->get()
             ->sum(fn ($batch) => $batch->remaining_quantity * $batch->purchase_price);
 
-        $lowStock = Medicine::all()->filter(fn ($m) => $m->is_low_stock)->values();
+        $lowStock = Medicine::query()
+            ->withSum('batches as stock_sum', 'remaining_quantity')
+            ->whereRaw('(select coalesce(sum(remaining_quantity), 0) from batches where batches.medicine_id = medicines.id) <= medicines.alert_threshold')
+            ->get();
 
         $expiringSoon = Batch::where('remaining_quantity', '>', 0)
             ->whereBetween('expiry_date', [now(), now()->addDays(30)])

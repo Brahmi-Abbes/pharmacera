@@ -146,7 +146,7 @@ class SaleForm
                         TextInput::make('unit_price')
                             ->required()
                             ->numeric()
-                            ->prefix('$')
+                            ->prefix('DZD ')
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (Get $get, Set $set) {
                                 $set('subtotal', round((float) $get('quantity') * (float) $get('unit_price'), 2));
@@ -154,7 +154,7 @@ class SaleForm
                         TextInput::make('subtotal')
                             ->required()
                             ->numeric()
-                            ->prefix('$')
+                            ->prefix('DZD ')
                             ->disabled()
                             ->dehydrated(),
                     ])
@@ -165,7 +165,7 @@ class SaleForm
                 TextInput::make('total')
                     ->required()
                     ->numeric()
-                    ->prefix('$')
+                    ->prefix('DZD ')
                     ->disabled()
                     ->dehydrated(),
             ]);
