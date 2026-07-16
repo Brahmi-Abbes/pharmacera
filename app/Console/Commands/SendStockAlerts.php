@@ -1,52 +1,39 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Console\Commands;
 
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
-use Illuminate\Support\Collection;
+use App\Models\Medicine;
+use App\Models\Batch;
+use App\Models\User;
+use App\Notifications\StockAlertDigest;
+use Illuminate\Console\Command;
 
-class StockAlertDigest extends Notification
+class SendStockAlerts extends Command
 {
-    /**
-     * @param Collection $lowStockMedicines Each item needs ->name, ->stock_sum, ->alert_threshold
-     * @param Collection $expiringBatches   Each item needs ->medicine->name, ->expiry_date, ->remaining_quantity
-     */
-    public function __construct(
-        public Collection $lowStockMedicines,
-        public Collection $expiringBatches,
-    ) {}
+    protected $signature = 'pharmacera:send-stock-alerts';
+    protected $description = 'Email admins and pharmacists a daily digest of low-stock medicines and expiring batches.';
 
-    public function via(object $notifiable): array
+    public function handle(): void
     {
-        return ['mail'];
-    }
+        $lowStock = Medicine::all()->filter(fn ($m) => $m->is_low_stock)->values();
 
-    public function toMail(object $notifiable): MailMessage
-    {
-        $message = (new MailMessage)
-            ->subject('Pharmacera — Weekly stock alert')
-            ->greeting("Hello {$notifiable->name},");
+        $expiring = Batch::where('remaining_quantity', '>', 0)
+            ->whereBetween('expiry_date', [now(), now()->addDays(90)])
+            ->with('medicine')
+            ->orderBy('expiry_date')
+            ->get();
 
-        if ($this->lowStockMedicines->isNotEmpty()) {
-            $message->line('The following medicines are at or below their alert threshold:');
-
-            foreach ($this->lowStockMedicines as $medicine) {
-                $message->line("• {$medicine->name} — {$medicine->stock_sum} left (threshold: {$medicine->alert_threshold})");
-            }
+        if ($lowStock->isEmpty() && $expiring->isEmpty()) {
+            $this->info('Nothing to report — no alerts sent.');
+            return;
         }
 
-        if ($this->expiringBatches->isNotEmpty()) {
-            $message->line('The following batches are expiring within the next 90 days:');
+        $recipients = User::role(['admin', 'pharmacist'])->get();
 
-            foreach ($this->expiringBatches as $batch) {
-                $expiry = $batch->expiry_date->format('Y-m-d');
-                $message->line("• {$batch->medicine->name} — expires {$expiry} ({$batch->remaining_quantity} units)");
-            }
+        foreach ($recipients as $user) {
+            $user->notify(new StockAlertDigest($lowStock, $expiring));
         }
 
-        return $message
-            ->action('Open Pharmacera', url('/admin'))
-            ->line('This is an automated weekly summary.');
+        $this->info("Stock alert digest sent to {$recipients->count()} user(s).");
     }
 }

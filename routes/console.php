@@ -8,4 +8,4 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('stock:send-alerts')->weeklyOn(1, '08:00'); // Monday, 8am
+Schedule::command('pharmacera:send-stock-alerts')->dailyAt('08:00');

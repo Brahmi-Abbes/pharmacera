@@ -10,10 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class LowStockMedicines extends BaseWidget
 {
-    protected static ?int $sort = 2;
-
     protected int|string|array $columnSpan = 'full';
-
+    protected static ?int $sort = 2;
+    
     public function table(Table $table): Table
     {
         return $table
