@@ -22,21 +22,26 @@ class BatchesRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('medicine_id')
+                    ->label(__('pharmacy.batch.medicine'))
                     ->relationship('medicine', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
                 TextInput::make('quantity')
+                    ->label(__('pharmacy.batch.quantity'))
                     ->required()
                     ->numeric(),
                 TextInput::make('remaining_quantity')
+                    ->label(__('pharmacy.batch.remaining_quantity'))
                     ->required()
                     ->numeric(),
                 TextInput::make('purchase_price')
+                    ->label(__('pharmacy.batch.purchase_price'))
                     ->required()
                     ->numeric()
-                    ->prefix('DZD '),
+                    ->prefix('$'),
                 DatePicker::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->required(),
             ]);
     }
@@ -47,18 +52,23 @@ class BatchesRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('medicine.name')
+                    ->label(__('pharmacy.batch.medicine'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('quantity')
+                    ->label(__('pharmacy.batch.quantity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('remaining_quantity')
+                    ->label(__('pharmacy.batch.remaining_quantity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('purchase_price')
+                    ->label(__('pharmacy.batch.purchase_price'))
                     ->money()
                     ->sortable(),
                 TextColumn::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->date()
                     ->sortable()
                     ->badge()

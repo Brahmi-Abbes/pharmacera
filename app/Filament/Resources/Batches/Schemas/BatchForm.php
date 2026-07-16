@@ -14,18 +14,19 @@ class BatchForm
         return $schema
             ->components([
                 Select::make('medicine_id')
-                    ->label('Medicine')
+                    ->label(__('pharmacy.batch.medicine'))
                     ->relationship('medicine', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
                 Select::make('supplier_id')
-                    ->label('Supplier')
+                    ->label(__('pharmacy.batch.supplier'))
                     ->relationship('supplier', 'name')
                     ->searchable()
                     ->preload()
                     ->nullable(),
                 TextInput::make('quantity')
+                    ->label(__('pharmacy.batch.quantity'))
                     ->required()
                     ->numeric()
                     ->minValue(0)
@@ -38,20 +39,23 @@ class BatchForm
                         }
                     }),
                 TextInput::make('remaining_quantity')
+                    ->label(__('pharmacy.batch.remaining_quantity'))
                     ->required()
                     ->numeric()
                     ->minValue(0)
                     // Can never physically have more left than you originally received.
                     ->lte('quantity')
                     ->validationMessages([
-                        'lte' => 'Remaining quantity cannot be more than the quantity received.',
+                        'lte' => __('pharmacy.batch.remaining_lte_quantity'),
                     ]),
                 TextInput::make('purchase_price')
+                    ->label(__('pharmacy.batch.purchase_price'))
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->prefix('DZD '),
+                    ->prefix('$'),
                 DatePicker::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->required()
                     ->native(false),
             ]);

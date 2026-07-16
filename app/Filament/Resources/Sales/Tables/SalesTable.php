@@ -16,21 +16,29 @@ class SalesTable
         return $table
             ->columns([
                 TextColumn::make('id')
-                    ->label('Sale #')
+                    ->label(__('pharmacy.sale.sale_number'))
                     ->sortable(),
                 TextColumn::make('user.name')
-                    ->label('Cashier')
+                    ->label(__('pharmacy.sale.cashier'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('items_count')
-                    ->label('Items')
+                    ->label(__('pharmacy.sale.items'))
                     ->counts('items')
                     ->sortable(),
                 TextColumn::make('total')
+                    ->label(__('pharmacy.sale.total'))
                     ->money()
                     ->sortable(),
                 TextColumn::make('payment_method')
+                    ->label(__('pharmacy.sale.payment_method'))
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
+                        'cash' => __('pharmacy.sale.cash'),
+                        'card' => __('pharmacy.sale.card'),
+                        'insurance' => __('pharmacy.sale.insurance'),
+                        default => $state,
+                    })
                     ->color(fn (string $state): string => match ($state) {
                         'cash' => 'success',
                         'card' => 'info',
@@ -39,10 +47,12 @@ class SalesTable
                     })
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -50,10 +60,11 @@ class SalesTable
             ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('payment_method')
+                    ->label(__('pharmacy.sale.payment_method'))
                     ->options([
-                        'cash' => 'Cash',
-                        'card' => 'Card',
-                        'insurance' => 'Insurance',
+                        'cash' => __('pharmacy.sale.cash'),
+                        'card' => __('pharmacy.sale.card'),
+                        'insurance' => __('pharmacy.sale.insurance'),
                     ]),
             ])
             ->recordActions([

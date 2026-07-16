@@ -16,12 +16,18 @@ class ActivityLogsTable
         return $table
             ->columns([
                 TextColumn::make('created_at')
-                    ->label('When')
+                    ->label(__('pharmacy.activity.when'))
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('log_name')
-                    ->label('Area')
+                    ->label(__('pharmacy.activity.area'))
                     ->badge()
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'sale' => __('pharmacy.model.sale'),
+                        'sale_item' => __('pharmacy.activity.sale_item'),
+                        'batch' => __('pharmacy.model.batch'),
+                        default => (string) $state,
+                    })
                     ->color(fn (?string $state): string => match ($state) {
                         'sale' => 'success',
                         'sale_item' => 'info',
@@ -29,29 +35,35 @@ class ActivityLogsTable
                         default => 'gray',
                     }),
                 TextColumn::make('description')
-                    ->label('Event')
-                    ->badge(),
+                    ->label(__('pharmacy.activity.event'))
+                    ->badge()
+                    ->formatStateUsing(fn (?string $state): string => match ($state) {
+                        'created' => __('pharmacy.activity.created'),
+                        'updated' => __('pharmacy.activity.updated'),
+                        'deleted' => __('pharmacy.activity.deleted'),
+                        default => (string) $state,
+                    }),
                 TextColumn::make('subject_id')
-                    ->label('Record #'),
+                    ->label(__('pharmacy.activity.record_number')),
                 TextColumn::make('causer.name')
-                    ->label('By')
-                    ->placeholder('System'),
+                    ->label(__('pharmacy.activity.by'))
+                    ->placeholder(__('pharmacy.activity.system')),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('log_name')
-                    ->label('Area')
+                    ->label(__('pharmacy.activity.area'))
                     ->options([
-                        'sale' => 'Sale',
-                        'sale_item' => 'Sale item',
-                        'batch' => 'Batch',
+                        'sale' => __('pharmacy.model.sale'),
+                        'sale_item' => __('pharmacy.activity.sale_item'),
+                        'batch' => __('pharmacy.model.batch'),
                     ]),
                 SelectFilter::make('description')
-                    ->label('Event')
+                    ->label(__('pharmacy.activity.event'))
                     ->options([
-                        'created' => 'Created',
-                        'updated' => 'Updated',
-                        'deleted' => 'Deleted',
+                        'created' => __('pharmacy.activity.created'),
+                        'updated' => __('pharmacy.activity.updated'),
+                        'deleted' => __('pharmacy.activity.deleted'),
                     ]),
             ])
             ->recordActions([

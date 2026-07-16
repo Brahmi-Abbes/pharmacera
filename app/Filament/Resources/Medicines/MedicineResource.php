@@ -33,6 +33,11 @@ class MedicineResource extends Resource
         return __('pharmacy.model.medicine');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.medicines');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return MedicineForm::configure($schema);

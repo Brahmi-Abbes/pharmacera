@@ -68,6 +68,7 @@ return [
         'in_stock' => 'In stock',
         'empty' => 'Empty',
         'all' => 'All',
+        'remaining_lte_quantity' => 'Remaining quantity cannot be more than the quantity received.',
     ],
 
     // Sale
@@ -86,6 +87,10 @@ return [
         'card' => 'Card',
         'insurance' => 'Insurance',
         'barcode_scan' => 'Scan barcode',
+        'barcode_scan_placeholder' => 'Click here, then scan — or type a barcode and press Enter',
+        'no_medicine_for_barcode' => 'No medicine found for that barcode',
+        'no_stock_for_medicine' => 'No stock left for :medicine',
+        'available_in_batch' => ':count available in this batch.',
     ],
 
     // User
@@ -95,11 +100,15 @@ return [
         'password' => 'Password',
         'password_help' => 'Leave blank to keep the current password when editing.',
         'role' => 'Role',
+        'role_admin' => 'Admin',
+        'role_pharmacist' => 'Pharmacist',
+        'role_cashier' => 'Cashier',
     ],
 
     // Activity Log
     'activity' => [
         'when' => 'When',
+        'sale_item' => 'Sale item',
         'area' => 'Area',
         'event' => 'Event',
         'record_number' => 'Record #',
@@ -137,6 +146,7 @@ return [
         'monthly' => 'Monthly',
         'date' => 'Date',
         'generate' => 'Generate PDF',
+        'any_day_in_month' => 'Any day in the month',
     ],
 
     // Shared / actions

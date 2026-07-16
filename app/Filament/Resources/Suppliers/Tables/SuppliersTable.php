@@ -15,25 +15,30 @@ class SuppliersTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('pharmacy.supplier.name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('phone')
+                    ->label(__('pharmacy.supplier.phone'))
                     ->searchable(),
                 TextColumn::make('wilaya')
+                    ->label(__('pharmacy.supplier.wilaya'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('pharmacy.supplier.email'))
                     ->searchable(),
                 TextColumn::make('batches_count')
-                    ->label('Batches supplied')
+                    ->label(__('pharmacy.supplier.batches_count'))
                     ->counts('batches')
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

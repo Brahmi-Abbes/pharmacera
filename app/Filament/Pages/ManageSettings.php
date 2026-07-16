@@ -21,6 +21,11 @@ class ManageSettings extends Page
         return __('pharmacy.nav.settings');
     }
 
+    public function getTitle(): string
+    {
+        return __('pharmacy.settings.title');
+    }
+
     /**
      * @var array<string, mixed>|null
      */
@@ -41,20 +46,23 @@ class ManageSettings extends Page
         return $schema
             ->components([
                 TextInput::make('store_name')
-                    ->label('Store name')
+                    ->label(__('pharmacy.settings.store_name'))
                     ->required()
                     ->maxLength(255),
                 TextInput::make('currency')
+                    ->label(__('pharmacy.settings.currency'))
                     ->required()
                     ->maxLength(10)
-                    ->helperText('e.g. DZD, USD, EUR'),
+                    ->helperText(__('pharmacy.settings.currency_help')),
                 TextInput::make('phone')
+                    ->label(__('pharmacy.settings.phone'))
                     ->tel()
                     ->maxLength(255),
                 TextInput::make('address')
+                    ->label(__('pharmacy.settings.address'))
                     ->maxLength(255),
                 TextInput::make('tax_rate')
-                    ->label('Tax rate (%)')
+                    ->label(__('pharmacy.settings.tax_rate'))
                     ->numeric()
                     ->minValue(0)
                     ->maxValue(100)

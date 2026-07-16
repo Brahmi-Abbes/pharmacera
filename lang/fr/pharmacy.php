@@ -63,6 +63,7 @@ return [
         'in_stock' => 'En stock',
         'empty' => 'Épuisé',
         'all' => 'Tous',
+        'remaining_lte_quantity' => 'La quantité restante ne peut pas dépasser la quantité reçue.',
     ],
 
     'sale' => [
@@ -80,6 +81,10 @@ return [
         'card' => 'Carte',
         'insurance' => 'Assurance',
         'barcode_scan' => 'Scanner le code-barres',
+        'barcode_scan_placeholder' => 'Cliquez ici puis scannez — ou tapez un code-barres et appuyez sur Entrée',
+        'no_medicine_for_barcode' => 'Aucun médicament trouvé pour ce code-barres',
+        'no_stock_for_medicine' => 'Plus de stock pour :medicine',
+        'available_in_batch' => ':count disponible(s) dans ce lot.',
     ],
 
     'user' => [
@@ -88,10 +93,14 @@ return [
         'password' => 'Mot de passe',
         'password_help' => 'Laisser vide pour conserver le mot de passe actuel lors de la modification.',
         'role' => 'Rôle',
+        'role_admin' => 'Administrateur',
+        'role_pharmacist' => 'Pharmacien',
+        'role_cashier' => 'Caissier',
     ],
 
     'activity' => [
         'when' => 'Quand',
+        'sale_item' => 'Article de vente',
         'area' => 'Domaine',
         'event' => 'Événement',
         'record_number' => 'Enregistrement n°',
@@ -127,6 +136,7 @@ return [
         'monthly' => 'Mensuel',
         'date' => 'Date',
         'generate' => 'Générer le PDF',
+        'any_day_in_month' => 'Un jour quelconque du mois',
     ],
 
     'actions' => [

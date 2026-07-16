@@ -32,6 +32,11 @@ class BatchResource extends Resource
         return __('pharmacy.model.batch');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.batches');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return BatchForm::configure($schema);

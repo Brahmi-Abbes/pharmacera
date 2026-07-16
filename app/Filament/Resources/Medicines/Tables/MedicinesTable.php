@@ -19,40 +19,50 @@ class MedicinesTable
             )
             ->columns([
                 TextColumn::make('category.name')
-                    ->label('Category')
+                    ->label(__('pharmacy.medicine.category'))
                     ->searchable()
                     ->sortable()
-                    ->placeholder('Uncategorized'),
+                    ->placeholder(__('pharmacy.medicine.uncategorized')),
                 TextColumn::make('name')
+                    ->label(__('pharmacy.medicine.name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('generic_name')
+                    ->label(__('pharmacy.medicine.generic_name'))
                     ->searchable(),
                 TextColumn::make('unit')
+                    ->label(__('pharmacy.medicine.unit'))
                     ->searchable(),
                 TextColumn::make('selling_price')
+                    ->label(__('pharmacy.medicine.selling_price'))
                     ->money()
                     ->sortable(),
                 TextColumn::make('purchase_price')
+                    ->label(__('pharmacy.medicine.purchase_price'))
                     ->money()
                     ->sortable(),
                 TextColumn::make('stock_sum')
-                    ->label('Stock')
+                    ->label(__('pharmacy.medicine.stock'))
                     ->numeric()
                     ->sortable()
                     ->badge()
                     ->color(fn ($record) => (int) $record->stock_sum <= $record->alert_threshold ? 'danger' : 'success'),
                 TextColumn::make('alert_threshold')
+                    ->label(__('pharmacy.medicine.alert_threshold'))
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                // MedicinesTable.php
-                TextColumn::make('barcode')->searchable()->toggleable(isToggledHiddenByDefault: true),  
+                TextColumn::make('barcode')
+                    ->label(__('pharmacy.medicine.barcode'))
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

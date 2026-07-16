@@ -32,6 +32,11 @@ class SaleResource extends Resource
         return __('pharmacy.model.sale');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.sales');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return SaleForm::configure($schema);

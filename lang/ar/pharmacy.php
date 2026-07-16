@@ -63,6 +63,7 @@ return [
         'in_stock' => 'متوفر',
         'empty' => 'نافذ',
         'all' => 'الكل',
+        'remaining_lte_quantity' => 'لا يمكن أن تتجاوز الكمية المتبقية الكمية المستلمة.',
     ],
 
     'sale' => [
@@ -80,6 +81,10 @@ return [
         'card' => 'بطاقة',
         'insurance' => 'تأمين',
         'barcode_scan' => 'مسح الرمز الشريطي',
+        'barcode_scan_placeholder' => 'انقر هنا ثم امسح — أو أدخل الرمز الشريطي واضغط Enter',
+        'no_medicine_for_barcode' => 'لم يتم العثور على دواء بهذا الرمز الشريطي',
+        'no_stock_for_medicine' => 'لا يوجد مخزون متبقٍ لـ :medicine',
+        'available_in_batch' => 'متوفر :count في هذه الدفعة.',
     ],
 
     'user' => [
@@ -88,10 +93,14 @@ return [
         'password' => 'كلمة المرور',
         'password_help' => 'اتركه فارغًا للاحتفاظ بكلمة المرور الحالية عند التعديل.',
         'role' => 'الدور',
+        'role_admin' => 'مدير',
+        'role_pharmacist' => 'صيدلي',
+        'role_cashier' => 'أمين الصندوق',
     ],
 
     'activity' => [
         'when' => 'الوقت',
+        'sale_item' => 'عنصر بيع',
         'area' => 'القسم',
         'event' => 'الحدث',
         'record_number' => 'رقم السجل',
@@ -127,6 +136,7 @@ return [
         'monthly' => 'شهري',
         'date' => 'التاريخ',
         'generate' => 'إنشاء PDF',
+        'any_day_in_month' => 'أي يوم في الشهر',
     ],
 
     'actions' => [

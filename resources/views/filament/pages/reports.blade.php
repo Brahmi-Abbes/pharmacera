@@ -4,7 +4,7 @@
 
         <div class="mt-4">
             <x-filament::button type="submit" icon="heroicon-o-document-arrow-down">
-                Generate PDF
+                {{ __('pharmacy.reports.generate') }}
             </x-filament::button>
         </div>
     </form>

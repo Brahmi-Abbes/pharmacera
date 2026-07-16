@@ -32,6 +32,11 @@ class UserResource extends Resource
         return __('pharmacy.model.user');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.users');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return UserForm::configure($schema);

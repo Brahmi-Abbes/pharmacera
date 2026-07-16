@@ -17,26 +17,30 @@ class BatchesTable
         return $table
             ->columns([
                 TextColumn::make('medicine.name')
-                    ->label('Medicine')
+                    ->label(__('pharmacy.batch.medicine'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('supplier.name')
-                    ->label('Supplier')
+                    ->label(__('pharmacy.batch.supplier'))
                     ->searchable()
                     ->sortable()
                     ->placeholder('—'),
                 TextColumn::make('quantity')
+                    ->label(__('pharmacy.batch.quantity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('remaining_quantity')
+                    ->label(__('pharmacy.batch.remaining_quantity'))
                     ->numeric()
                     ->sortable()
                     ->badge()
                     ->color(fn ($record) => $record->remaining_quantity <= 0 ? 'danger' : 'success'),
                 TextColumn::make('purchase_price')
+                    ->label(__('pharmacy.batch.purchase_price'))
                     ->money()
                     ->sortable(),
                 TextColumn::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->date()
                     ->sortable()
                     ->badge()
@@ -46,10 +50,12 @@ class BatchesTable
                         default => 'success',
                     }),
                 TextColumn::make('created_at')
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -57,15 +63,15 @@ class BatchesTable
             ->defaultSort('expiry_date')
             ->filters([
                 SelectFilter::make('medicine_id')
-                    ->label('Medicine')
+                    ->label(__('pharmacy.batch.medicine'))
                     ->relationship('medicine', 'name')
                     ->searchable()
                     ->preload(),
                 TernaryFilter::make('remaining_quantity')
-                    ->label('Stock status')
-                    ->placeholder('All')
-                    ->trueLabel('In stock')
-                    ->falseLabel('Empty')
+                    ->label(__('pharmacy.batch.stock_status'))
+                    ->placeholder(__('pharmacy.batch.all'))
+                    ->trueLabel(__('pharmacy.batch.in_stock'))
+                    ->falseLabel(__('pharmacy.batch.empty'))
                     ->queries(
                         true: fn ($query) => $query->where('remaining_quantity', '>', 0),
                         false: fn ($query) => $query->where('remaining_quantity', '<=', 0),

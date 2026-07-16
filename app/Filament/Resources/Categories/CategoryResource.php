@@ -32,6 +32,11 @@ class CategoryResource extends Resource
         return __('pharmacy.model.category');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.categories');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return CategoryForm::configure($schema);

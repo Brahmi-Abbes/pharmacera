@@ -33,6 +33,11 @@ class SupplierResource extends Resource
         return __('pharmacy.model.supplier');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.suppliers');
+    }
+
     public static function form(Schema $schema): Schema
     {
         return SupplierForm::configure($schema);

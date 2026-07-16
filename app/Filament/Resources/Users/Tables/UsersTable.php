@@ -16,14 +16,17 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('pharmacy.user.name'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('email')
+                    ->label(__('pharmacy.user.email'))
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('roles.name')
-                    ->label('Role')
+                    ->label(__('pharmacy.user.role'))
                     ->badge()
+                    ->formatStateUsing(fn (string $state): string => __('pharmacy.user.role_' . $state))
                     ->color(fn (string $state): string => match ($state) {
                         'admin' => 'danger',
                         'pharmacist' => 'info',
@@ -31,13 +34,16 @@ class UsersTable
                         default => 'gray',
                     }),
                 TextColumn::make('created_at')
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('roles')
-                    ->relationship('roles', 'name'),
+                    ->label(__('pharmacy.user.role'))
+                    ->relationship('roles', 'name')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => __('pharmacy.user.role_' . $record->name)),
             ])
             ->recordActions([
                 EditAction::make()

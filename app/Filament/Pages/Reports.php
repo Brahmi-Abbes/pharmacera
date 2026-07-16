@@ -31,6 +31,11 @@ class Reports extends Page implements HasForms
         return __('pharmacy.nav.reports');
     }
 
+    public function getTitle(): string
+    {
+        return __('pharmacy.reports.title');
+    }
+
     public ?array $data = [];
 
     public static function canAccess(): bool
@@ -53,10 +58,10 @@ class Reports extends Page implements HasForms
         return $schema
             ->components([
                 Radio::make('period')
-                    ->label('Report period')
+                    ->label(__('pharmacy.reports.period'))
                     ->options([
-                        'daily'   => 'Daily',
-                        'monthly' => 'Monthly',
+                        'daily'   => __('pharmacy.reports.daily'),
+                        'monthly' => __('pharmacy.reports.monthly'),
                     ])
                     ->inline()
                     ->inlineLabel(false)
@@ -64,7 +69,7 @@ class Reports extends Page implements HasForms
                     ->live(),
 
                 DatePicker::make('date')
-                    ->label(fn (Get $get) => $get('period') === 'monthly' ? 'Any day in the month' : 'Date')
+                    ->label(fn (Get $get) => $get('period') === 'monthly' ? __('pharmacy.reports.any_day_in_month') : __('pharmacy.reports.date'))
                     ->default(now())
                     ->native(false)
                     ->required(),

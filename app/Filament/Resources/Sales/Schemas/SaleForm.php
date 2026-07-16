@@ -21,55 +21,57 @@ class SaleForm
         return $schema
             ->components([
                 Select::make('user_id')
-                    ->label('Cashier')
+                    ->label(__('pharmacy.sale.cashier'))
                     ->relationship('user', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
                 Select::make('payment_method')
+                    ->label(__('pharmacy.sale.payment_method'))
                     ->options([
-                        'cash' => 'Cash',
-                        'card' => 'Card',
-                        'insurance' => 'Insurance',
+                        'cash' => __('pharmacy.sale.cash'),
+                        'card' => __('pharmacy.sale.card'),
+                        'insurance' => __('pharmacy.sale.insurance'),
                     ])
                     ->default('cash')
                     ->required(),
-                    TextInput::make('barcode_scan')
-    ->label('Scan barcode')
-    ->placeholder('Click here, then scan — or type a barcode and press Enter')
-    ->live(onBlur: true)
-    ->extraInputAttributes([
-        'autofocus' => true,
-        'x-on:keydown.enter.prevent' => '$el.blur()',
-    ])
-    ->dehydrated(false)
-    ->afterStateUpdated(function (?string $state, Get $get, Set $set) {
-        if (blank($state)) {
-            return;
-        }
+                TextInput::make('barcode_scan')
+                    ->label(__('pharmacy.sale.barcode_scan'))
+                    ->placeholder(__('pharmacy.sale.barcode_scan_placeholder'))
+                    ->live(onBlur: true)
+                    ->extraInputAttributes([
+                        'autofocus' => true,
+                        'x-on:keydown.enter.prevent' => '$el.blur()',
+                    ])
+                    ->dehydrated(false)
+                    ->afterStateUpdated(function (?string $state, Get $get, Set $set) {
+                        if (blank($state)) {
+                            return;
+                        }
 
-        $medicine = Medicine::findByBarcode($state);
+                        $medicine = Medicine::findByBarcode($state);
 
-        if (! $medicine) {
-            Notification::make()->title('No medicine found for that barcode')->danger()->send();
-            return $set('barcode_scan', null);
-        }
+                        if (! $medicine) {
+                            Notification::make()->title(__('pharmacy.sale.no_medicine_for_barcode'))->danger()->send();
+                            return $set('barcode_scan', null);
+                        }
 
-        $batch = $medicine->nextAvailableBatch();
+                        $batch = $medicine->nextAvailableBatch();
 
-        if (! $batch) {
-            Notification::make()->title("No stock left for {$medicine->name}")->danger()->send();
-            return $set('barcode_scan', null);
-        }
+                        if (! $batch) {
+                            Notification::make()->title(__('pharmacy.sale.no_stock_for_medicine', ['medicine' => $medicine->name]))->danger()->send();
+                            return $set('barcode_scan', null);
+                        }
 
-        $items = SaleCart::addOrIncrement($get('items') ?? [], $medicine->id, $batch->id, $medicine->selling_price, $batch->remaining_quantity);
+                        $items = SaleCart::addOrIncrement($get('items') ?? [], $medicine->id, $batch->id, $medicine->selling_price, $batch->remaining_quantity);
 
-        $set('items', $items);
-        $set('total', SaleCart::total($items));
-        $set('barcode_scan', null);
-    })
-    ->columnSpanFull(),
+                        $set('items', $items);
+                        $set('total', SaleCart::total($items));
+                        $set('barcode_scan', null);
+                    })
+                    ->columnSpanFull(),
                 Repeater::make('items')
+                    ->label(__('pharmacy.sale.items'))
                     ->relationship()
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set) {
@@ -80,7 +82,7 @@ class SaleForm
                     })
                     ->schema([
                         Select::make('medicine_id')
-                            ->label('Medicine')
+                            ->label(__('pharmacy.sale.medicine'))
                             ->relationship('medicine', 'name')
                             ->searchable()
                             ->preload()
@@ -91,7 +93,7 @@ class SaleForm
                                 $set('unit_price', $state ? Medicine::find($state)?->selling_price : null);
                             }),
                         Select::make('batch_id')
-                            ->label('Batch')
+                            ->label(__('pharmacy.sale.batch'))
                             ->options(function (Get $get): array {
                                 $medicineId = $get('medicine_id');
 
@@ -116,6 +118,7 @@ class SaleForm
                             // quantity from a previous batch can't slip through.
                             ->afterStateUpdated(fn (Set $set) => $set('quantity', 1)),
                         TextInput::make('quantity')
+                            ->label(__('pharmacy.sale.quantity'))
                             ->required()
                             ->numeric()
                             ->minValue(1)
@@ -137,24 +140,26 @@ class SaleForm
 
                                 $remaining = Batch::find($batchId)?->remaining_quantity;
 
-                                return $remaining === null ? null : "{$remaining} available in this batch.";
+                                return $remaining === null ? null : __('pharmacy.sale.available_in_batch', ['count' => $remaining]);
                             })
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (Get $get, Set $set) {
                                 $set('subtotal', round((float) $get('quantity') * (float) $get('unit_price'), 2));
                             }),
                         TextInput::make('unit_price')
+                            ->label(__('pharmacy.sale.unit_price'))
                             ->required()
                             ->numeric()
-                            ->prefix('DZD ')
+                            ->prefix('$')
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (Get $get, Set $set) {
                                 $set('subtotal', round((float) $get('quantity') * (float) $get('unit_price'), 2));
                             }),
                         TextInput::make('subtotal')
+                            ->label(__('pharmacy.sale.subtotal'))
                             ->required()
                             ->numeric()
-                            ->prefix('DZD ')
+                            ->prefix('$')
                             ->disabled()
                             ->dehydrated(),
                     ])
@@ -163,9 +168,10 @@ class SaleForm
                     ->minItems(1)
                     ->required(),
                 TextInput::make('total')
+                    ->label(__('pharmacy.sale.total'))
                     ->required()
                     ->numeric()
-                    ->prefix('DZD ')
+                    ->prefix('$')
                     ->disabled()
                     ->dehydrated(),
             ]);

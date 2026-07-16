@@ -29,6 +29,11 @@ class ActivityLogResource extends Resource
         return __('pharmacy.nav.activity_log');
     }
 
+    public static function getPluralModelLabel(): string
+    {
+        return __('pharmacy.nav.activity_log');
+    }
+
     public static function table(Table $table): Table
     {
         return ActivityLogsTable::configure($table);
