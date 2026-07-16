@@ -30,20 +30,20 @@ class SalesOverview extends BaseWidget
             ->count();
 
         return [
-            Stat::make("Today's sales", number_format($todayTotal, 2).' $')
-                ->description('All sales recorded today')
+            Stat::make(__('pharmacy.dashboard.today_sales'), number_format($todayTotal, 2).' $')
+                ->description(__('pharmacy.dashboard.today_sales_desc'))
                 ->color('success'),
 
-            Stat::make('This week', number_format($weekTotal, 2).' $')
-                ->description('Since Monday')
+            Stat::make(__('pharmacy.dashboard.this_week'), number_format($weekTotal, 2).' $')
+                ->description(__('pharmacy.dashboard.this_week_desc'))
                 ->color('success'),
 
-            Stat::make('Low stock medicines', $lowStockCount)
-                ->description('At or below their alert threshold')
+            Stat::make(__('pharmacy.dashboard.low_stock_medicines'), $lowStockCount)
+                ->description(__('pharmacy.dashboard.low_stock_desc'))
                 ->color($lowStockCount > 0 ? 'danger' : 'success'),
 
-            Stat::make('Batches expiring soon', $expiringSoonCount)
-                ->description('Within the next 90 days')
+            Stat::make(__('pharmacy.dashboard.expiring_soon_stat'), $expiringSoonCount)
+                ->description(__('pharmacy.dashboard.expiring_soon_desc'))
                 ->color($expiringSoonCount > 0 ? 'warning' : 'success'),
         ];
     }

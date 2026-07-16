@@ -149,4 +149,20 @@ return [
         'cancel' => 'Annuler',
     ],
 
+    'dashboard' => [
+        'today_sales' => "Ventes d'aujourd'hui",
+        'today_sales_desc' => "Toutes les ventes enregistrées aujourd'hui",
+        'this_week' => 'Cette semaine',
+        'this_week_desc' => 'Depuis lundi',
+        'low_stock_medicines' => 'Médicaments en stock faible',
+        'low_stock_desc' => "À ou en dessous de leur seuil d'alerte",
+        'expiring_soon_stat' => 'Lots bientôt expirés',
+        'expiring_soon_desc' => 'Dans les 90 prochains jours',
+        'expiring_soon_heading' => 'Expiration prochaine',
+        'qty_left' => 'Qté restante',
+        'top_selling' => 'Médicaments les plus vendus (ce mois-ci)',
+        'units_sold' => 'Unités vendues',
+    ],
+
+
 ];

@@ -160,4 +160,20 @@ return [
         'cancel' => 'Cancel',
     ],
 
+    'dashboard' => [
+        'today_sales' => "Today's sales",
+        'today_sales_desc' => 'All sales recorded today',
+        'this_week' => 'This week',
+        'this_week_desc' => 'Since Monday',
+        'low_stock_medicines' => 'Low stock medicines',
+        'low_stock_desc' => 'At or below their alert threshold',
+        'expiring_soon_stat' => 'Batches expiring soon',
+        'expiring_soon_desc' => 'Within the next 90 days',
+        'expiring_soon_heading' => 'Expiring soon',
+        'qty_left' => 'Qty left',
+        'top_selling' => 'Top selling medicines (this month)',
+        'units_sold' => 'Units sold',
+    ],
+
+
 ];

@@ -7,9 +7,17 @@ use Filament\Widgets\ChartWidget;
 
 class TopSellingMedicines extends ChartWidget
 {
-    protected ?string $heading = 'Top selling medicines (this month)';
-
     protected static ?int $sort = 4;
+
+    protected int|string|array $columnSpan = [
+        'md' => 1,
+        'lg' => 1,
+    ];
+
+    public function getHeading(): ?string
+    {
+        return __('pharmacy.dashboard.top_selling');
+    }
 
     protected function getData(): array
     {
@@ -26,7 +34,7 @@ class TopSellingMedicines extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Units sold',
+                    'label' => __('pharmacy.dashboard.units_sold'),
                     'data' => $rows->pluck('total_quantity')->toArray(),
                     'backgroundColor' => '#10b981',
                 ],

@@ -149,4 +149,20 @@ return [
         'cancel' => 'إلغاء',
     ],
 
+    'dashboard' => [
+        'today_sales' => 'مبيعات اليوم',
+        'today_sales_desc' => 'جميع المبيعات المسجلة اليوم',
+        'this_week' => 'هذا الأسبوع',
+        'this_week_desc' => 'منذ الإثنين',
+        'low_stock_medicines' => 'أدوية منخفضة المخزون',
+        'low_stock_desc' => 'عند حد التنبيه أو أقل منه',
+        'expiring_soon_stat' => 'دفعات قاربت على الانتهاء',
+        'expiring_soon_desc' => 'خلال الـ 90 يومًا القادمة',
+        'expiring_soon_heading' => 'قريبة الانتهاء',
+        'qty_left' => 'الكمية المتبقية',
+        'top_selling' => 'الأدوية الأكثر مبيعًا (هذا الشهر)',
+        'units_sold' => 'الوحدات المباعة',
+    ],
+
+
 ];

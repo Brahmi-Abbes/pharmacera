@@ -19,7 +19,7 @@ class ExpiringBatches extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Expiring soon')
+            ->heading(__('pharmacy.dashboard.expiring_soon_heading'))
             ->query(
                 Batch::query()
                     ->where('remaining_quantity', '>', 0)
@@ -28,11 +28,12 @@ class ExpiringBatches extends BaseWidget
             )
             ->columns([
                 TextColumn::make('medicine.name')
-                    ->label('Medicine')
+                    ->label(__('pharmacy.batch.medicine'))
                     ->searchable(),
                 TextColumn::make('remaining_quantity')
-                    ->label('Qty left'),
+                    ->label(__('pharmacy.dashboard.qty_left')),
                 TextColumn::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->date()
                     ->badge()
                     ->color(fn ($record) => match ($record->expiry_status) {

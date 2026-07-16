@@ -13,33 +13,51 @@ class ActivityLogInfolist
     {
         return $schema
             ->components([
-                Section::make('Details')
+                Section::make(__('pharmacy.activity.details'))
                     ->columns(2)
                     ->schema([
                         TextEntry::make('log_name')
-                            ->label('Area')
-                            ->badge(),
+                            ->label(__('pharmacy.activity.area'))
+                            ->badge()
+                            ->formatStateUsing(fn (?string $state): string => match ($state) {
+                                'sale' => __('pharmacy.model.sale'),
+                                'sale_item' => __('pharmacy.activity.sale_item'),
+                                'batch' => __('pharmacy.model.batch'),
+                                default => (string) $state,
+                            }),
                         TextEntry::make('description')
-                            ->label('Event')
-                            ->badge(),
+                            ->label(__('pharmacy.activity.event'))
+                            ->badge()
+                            ->formatStateUsing(fn (?string $state): string => match ($state) {
+                                'created' => __('pharmacy.activity.created'),
+                                'updated' => __('pharmacy.activity.updated'),
+                                'deleted' => __('pharmacy.activity.deleted'),
+                                default => (string) $state,
+                            }),
                         TextEntry::make('causer.name')
-                            ->label('Changed by')
-                            ->placeholder('System'),
+                            ->label(__('pharmacy.activity.changed_by'))
+                            ->placeholder(__('pharmacy.activity.system')),
                         TextEntry::make('created_at')
-                            ->label('When')
+                            ->label(__('pharmacy.activity.when'))
                             ->dateTime(),
                         TextEntry::make('subject_type')
-                            ->label('Model'),
+                            ->label(__('pharmacy.activity.model'))
+                            ->formatStateUsing(fn (?string $state): string => match ($state) {
+                                'App\\Models\\Sale' => __('pharmacy.model.sale'),
+                                'App\\Models\\SaleItem' => __('pharmacy.activity.sale_item'),
+                                'App\\Models\\Batch' => __('pharmacy.model.batch'),
+                                default => (string) $state,
+                            }),
                         TextEntry::make('subject_id')
-                            ->label('Record #'),
+                            ->label(__('pharmacy.activity.record_number')),
                     ]),
-                Section::make('What changed')
+                Section::make(__('pharmacy.activity.what_changed'))
                     ->schema([
                         KeyValueEntry::make('attribute_changes.old')
-                            ->label('Before')
+                            ->label(__('pharmacy.activity.before'))
                             ->visible(fn ($record) => filled($record->attribute_changes['old'] ?? null)),
                         KeyValueEntry::make('attribute_changes.attributes')
-                            ->label('After')
+                            ->label(__('pharmacy.activity.after'))
                             ->visible(fn ($record) => filled($record->attribute_changes['attributes'] ?? null)),
                     ]),
             ]);

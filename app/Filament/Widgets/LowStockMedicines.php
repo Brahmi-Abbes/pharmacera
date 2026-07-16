@@ -12,15 +12,12 @@ class LowStockMedicines extends BaseWidget
 {
     protected static ?int $sort = 2;
 
-    protected int|string|array $columnSpan = [
-        'md' => 1,
-        'lg' => 1,
-    ];
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Low stock medicines')
+            ->heading(__('pharmacy.dashboard.low_stock_medicines'))
             ->query(
                 Medicine::query()
                     ->withSum('batches as stock_sum', 'remaining_quantity')
@@ -30,16 +27,17 @@ class LowStockMedicines extends BaseWidget
             )
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('pharmacy.medicine.name'))
                     ->searchable(),
                 TextColumn::make('category.name')
-                    ->label('Category')
-                    ->placeholder('Uncategorized'),
+                    ->label(__('pharmacy.medicine.category'))
+                    ->placeholder(__('pharmacy.medicine.uncategorized')),
                 TextColumn::make('stock_sum')
-                    ->label('In stock')
+                    ->label(__('pharmacy.medicine.stock'))
                     ->badge()
                     ->color('danger'),
                 TextColumn::make('alert_threshold')
-                    ->label('Threshold'),
+                    ->label(__('pharmacy.medicine.alert_threshold')),
             ])
             ->paginated([5, 10, 25]);
     }
