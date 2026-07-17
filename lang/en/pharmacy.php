@@ -99,6 +99,7 @@ return [
         'email' => 'Email address',
         'password' => 'Password',
         'password_help' => 'Leave blank to keep the current password when editing.',
+        'password_confirmation' => 'Confirm password',
         'role' => 'Role',
         'role_admin' => 'Admin',
         'role_pharmacist' => 'Pharmacist',

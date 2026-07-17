@@ -3,15 +3,11 @@
 namespace App\Notifications;
 
 use App\Models\Medicine;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class LowStockAlert extends Notification implements ShouldQueue
+class LowStockAlert extends Notification
 {
-    use Queueable;
-
     public function __construct(
         public Medicine $medicine,
     ) {}
@@ -28,7 +24,6 @@ class LowStockAlert extends Notification implements ShouldQueue
             ->greeting("Hello {$notifiable->name},")
             ->line("{$this->medicine->name} has dropped to {$this->medicine->total_stock} units, at or below its alert threshold of {$this->medicine->alert_threshold}.")
             ->line('It is still available to sell, but you may want to reorder soon.')
-            ->action('Open medicine', url('/admin/medicines/'.$this->medicine->id.'/edit'))
-            ->line('You are receiving this immediately because stock just crossed the threshold — separate from the daily digest.');
+            ->action('Open medicine', url('/admin/medicines/'.$this->medicine->id.'/edit'));
     }
 }

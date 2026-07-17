@@ -3,15 +3,11 @@
 namespace App\Notifications;
 
 use App\Models\Medicine;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class OutOfStockAlert extends Notification implements ShouldQueue
+class OutOfStockAlert extends Notification
 {
-    use Queueable;
-
     public function __construct(
         public Medicine $medicine,
     ) {}
@@ -28,7 +24,6 @@ class OutOfStockAlert extends Notification implements ShouldQueue
             ->greeting("Hello {$notifiable->name},")
             ->line("{$this->medicine->name} has just run out of stock across all batches.")
             ->line('No units are currently available to sell.')
-            ->action('Open medicine', url('/admin/medicines/'.$this->medicine->id.'/edit'))
-            ->line('You are receiving this immediately because stock just reached zero — separate from the daily digest.');
+            ->action('Open medicine', url('/admin/medicines/'.$this->medicine->id.'/edit'));
     }
 }

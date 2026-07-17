@@ -92,6 +92,7 @@ return [
         'email' => 'Adresse e-mail',
         'password' => 'Mot de passe',
         'password_help' => 'Laisser vide pour conserver le mot de passe actuel lors de la modification.',
+        'password_confirmation' => 'Confirmer le mot de passe',
         'role' => 'Rôle',
         'role_admin' => 'Administrateur',
         'role_pharmacist' => 'Pharmacien',

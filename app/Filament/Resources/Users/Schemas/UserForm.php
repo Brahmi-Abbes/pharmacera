@@ -31,7 +31,14 @@ class UserForm
                     ->dehydrated(fn ($state) => filled($state))
                     ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                     ->minLength(8)
+                    ->same('passwordConfirmation')
                     ->helperText(__('pharmacy.user.password_help')),
+                TextInput::make('passwordConfirmation')
+                    ->label(__('pharmacy.user.password_confirmation'))
+                    ->password()
+                    ->revealable()
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->dehydrated(false),
                 Select::make('roles')
                     ->label(__('pharmacy.user.role'))
                     ->relationship('roles', 'name')

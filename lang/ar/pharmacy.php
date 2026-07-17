@@ -92,6 +92,7 @@ return [
         'email' => 'البريد الإلكتروني',
         'password' => 'كلمة المرور',
         'password_help' => 'اتركه فارغًا للاحتفاظ بكلمة المرور الحالية عند التعديل.',
+        'password_confirmation' => 'تأكيد كلمة المرور',
         'role' => 'الدور',
         'role_admin' => 'مدير',
         'role_pharmacist' => 'صيدلي',
