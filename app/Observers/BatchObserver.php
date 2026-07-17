@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Batch;
 use App\Models\User;
+use App\Notifications\LowStockAlert;
 use App\Notifications\OutOfStockAlert;
 
 class BatchObserver
@@ -24,27 +25,30 @@ class BatchObserver
 
         $medicine = $batch->medicine;
 
-        // total_stock is a live sum across all of this medicine's batches,
-        // queried fresh — since this fires after the batch was already
-        // saved, it reflects the state *after* this change.
         $stockAfter = $medicine->total_stock;
-
-        // Reconstruct what the medicine's total stock was immediately
-        // before this specific batch's change, by undoing just this
-        // batch's own delta from the current total. Works correctly even
-        // when the medicine has several other batches untouched by this save.
         $stockBefore = $stockAfter - $batch->remaining_quantity + $batch->getOriginal('remaining_quantity');
 
         $justWentEmpty = $stockBefore > 0 && $stockAfter <= 0;
 
-        if (! $justWentEmpty) {
+        // Mutually exclusive with justWentEmpty — if stock skipped straight from
+        // healthy to zero in one sale, only the out-of-stock email fires below,
+        // not both, to avoid two notifications for the same underlying event.
+        $justWentLow = $stockAfter > 0
+            && $stockBefore > $medicine->alert_threshold
+            && $stockAfter <= $medicine->alert_threshold;
+
+        if (! $justWentEmpty && ! $justWentLow) {
             return;
         }
 
         $recipients = User::role(['admin', 'pharmacist'])->get();
 
         foreach ($recipients as $user) {
-            $user->notify(new OutOfStockAlert($medicine));
+            $user->notify(
+                $justWentEmpty
+                    ? new OutOfStockAlert($medicine)
+                    : new LowStockAlert($medicine)
+            );
         }
     }
 }
