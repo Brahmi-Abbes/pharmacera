@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories;
 
+use App\Filament\Concerns\HasRoleAuthorization;
 use App\Filament\Resources\Categories\Pages\CreateCategory;
 use App\Filament\Resources\Categories\Pages\EditCategory;
 use App\Filament\Resources\Categories\Pages\ListCategories;
@@ -16,6 +17,18 @@ use Filament\Tables\Table;
 
 class CategoryResource extends Resource
 {
+    use HasRoleAuthorization;
+
+    protected static function viewRoles(): array
+    {
+        return ['admin', 'pharmacist', 'cashier'];
+    }
+
+    protected static function manageRoles(): array
+    {
+        return ['admin', 'pharmacist'];
+    }
+
     protected static ?string $model = Category::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -61,29 +74,5 @@ class CategoryResource extends Resource
             'create' => CreateCategory::route('/create'),
             'edit' => EditCategory::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist', 'cashier']) ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
-    }
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
     }
 }

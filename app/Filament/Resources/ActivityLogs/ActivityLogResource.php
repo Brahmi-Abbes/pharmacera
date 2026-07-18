@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ActivityLogs;
 
+use App\Filament\Concerns\HasRoleAuthorization;
 use App\Filament\Resources\ActivityLogs\Pages\ListActivityLogs;
 use App\Filament\Resources\ActivityLogs\Pages\ViewActivityLog;
 use App\Filament\Resources\ActivityLogs\Schemas\ActivityLogInfolist;
@@ -15,6 +16,20 @@ use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogResource extends Resource
 {
+    use HasRoleAuthorization;
+
+    // Read-only for everyone — admin and pharmacist can look, nobody creates
+    // or edits a log entry by hand, and only admin can clear old ones out.
+    protected static function viewRoles(): array
+    {
+        return ['admin', 'pharmacist'];
+    }
+
+    protected static function manageRoles(): array
+    {
+        return [];
+    }
+
     protected static ?string $model = Activity::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
@@ -50,31 +65,5 @@ class ActivityLogResource extends Resource
             'index' => ListActivityLogs::route('/'),
             'view' => ViewActivityLog::route('/{record}'),
         ];
-    }
-
-    // Read-only: no create, no edit, no delete for anyone but admins cleaning up old logs.
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
     }
 }

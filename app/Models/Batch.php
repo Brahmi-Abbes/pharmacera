@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Activitylog\Support\LogOptions;
 
 class Batch extends Model
 {
     use HasFactory, LogsActivity;
+    
 
     protected $fillable = [
         'medicine_id',
@@ -37,23 +40,24 @@ class Batch extends Model
             ->dontLogEmptyChanges();
     }
 
-    public function medicine()
+    public function medicine(): BelongsTo
     {
         return $this->belongsTo(Medicine::class);
     }
 
-    public function supplier()
+    public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
     }
 
-    public function saleItems()
+    public function saleItems(): HasMany
     {
         return $this->hasMany(SaleItem::class);
     }
 
     public function getExpiryStatusAttribute(): string
     {
+        
         $daysUntilExpiry = now()->diffInDays($this->expiry_date, false);
 
         if ($daysUntilExpiry < 0)  return 'expired';

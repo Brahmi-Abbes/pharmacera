@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Batches;
 
+use App\Filament\Concerns\HasRoleAuthorization;
 use App\Filament\Resources\Batches\Pages\CreateBatch;
 use App\Filament\Resources\Batches\Pages\EditBatch;
 use App\Filament\Resources\Batches\Pages\ListBatches;
@@ -16,6 +17,18 @@ use Filament\Tables\Table;
 
 class BatchResource extends Resource
 {
+    use HasRoleAuthorization;
+
+    protected static function viewRoles(): array
+    {
+        return ['admin', 'pharmacist', 'cashier'];
+    }
+
+    protected static function manageRoles(): array
+    {
+        return ['admin', 'pharmacist'];
+    }
+
     protected static ?string $model = Batch::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArchiveBox;
@@ -61,29 +74,5 @@ class BatchResource extends Resource
             'create' => CreateBatch::route('/create'),
             'edit' => EditBatch::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist', 'cashier']) ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
-    }
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
     }
 }

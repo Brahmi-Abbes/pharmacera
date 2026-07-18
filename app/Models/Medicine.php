@@ -43,7 +43,11 @@ class Medicine extends Model
         return $this->hasMany(SaleItem::class);
     }
 
-    // Total remaining stock across all batches
+    // Total remaining stock across all batches — deliberately NOT cached.
+    // This needs to be fresh every time it's read, since BatchObserver reads
+    // it right after a batch's stock changes to detect low/out-of-stock
+    // crossings. A cached version returns stale numbers on the 2nd+ change
+    // in the same request (learned that one the hard way).
     public function getTotalStockAttribute(): int
     {
         return $this->batches()->sum('remaining_quantity');

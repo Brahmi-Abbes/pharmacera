@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Sales;
 
+use App\Filament\Concerns\HasRoleAuthorization;
 use App\Filament\Resources\Sales\Pages\CreateSale;
 use App\Filament\Resources\Sales\Pages\EditSale;
 use App\Filament\Resources\Sales\Pages\ListSales;
@@ -16,6 +17,18 @@ use Filament\Tables\Table;
 
 class SaleResource extends Resource
 {
+    use HasRoleAuthorization;
+
+    protected static function viewRoles(): array
+    {
+        return ['admin', 'pharmacist', 'cashier'];
+    }
+
+    protected static function manageRoles(): array
+    {
+        return ['admin', 'cashier'];
+    }
+
     protected static ?string $model = Sale::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingCart;
@@ -61,29 +74,5 @@ class SaleResource extends Resource
             'create' => CreateSale::route('/create'),
             'edit' => EditSale::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist', 'cashier']) ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'cashier']) ?? false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'cashier']) ?? false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
-    }
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
     }
 }

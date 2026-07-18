@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Medicines;
 
+use App\Filament\Concerns\HasRoleAuthorization;
 use App\Filament\Resources\Medicines\Pages\CreateMedicine;
 use App\Filament\Resources\Medicines\Pages\EditMedicine;
 use App\Filament\Resources\Medicines\Pages\ListMedicines;
@@ -17,6 +18,18 @@ use Filament\Tables\Table;
 
 class MedicineResource extends Resource
 {
+    use HasRoleAuthorization;
+
+    protected static function viewRoles(): array
+    {
+        return ['admin', 'pharmacist', 'cashier'];
+    }
+
+    protected static function manageRoles(): array
+    {
+        return ['admin', 'pharmacist'];
+    }
+
     protected static ?string $model = Medicine::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBeaker;
@@ -62,29 +75,5 @@ class MedicineResource extends Resource
             'create' => CreateMedicine::route('/create'),
             'edit' => EditMedicine::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist', 'cashier']) ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
-    }
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Suppliers;
 
+use App\Filament\Concerns\HasRoleAuthorization;
 use App\Filament\Resources\Suppliers\Pages\CreateSupplier;
 use App\Filament\Resources\Suppliers\Pages\EditSupplier;
 use App\Filament\Resources\Suppliers\Pages\ListSuppliers;
@@ -17,6 +18,18 @@ use Filament\Tables\Table;
 
 class SupplierResource extends Resource
 {
+    use HasRoleAuthorization;
+
+    protected static function viewRoles(): array
+    {
+        return ['admin', 'pharmacist'];
+    }
+
+    protected static function manageRoles(): array
+    {
+        return ['admin', 'pharmacist'];
+    }
+
     protected static ?string $model = Supplier::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTruck;
@@ -62,30 +75,5 @@ class SupplierResource extends Resource
             'create' => CreateSupplier::route('/create'),
             'edit' => EditSupplier::route('/{record}/edit'),
         ];
-    }
-
-    public static function canViewAny(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canCreate(): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canEdit($record): bool
-    {
-        return auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
-    }
-
-    public static function canDeleteAny(): bool
-    {
-        return auth()->user()?->hasRole('admin') ?? false;
     }
 }
