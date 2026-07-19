@@ -20,12 +20,12 @@ class ActivityLogResource extends Resource
 
     // Read-only for everyone — admin and pharmacist can look, nobody creates
     // or edits a log entry by hand, and only admin can clear old ones out.
-    protected static function viewRoles(): array
+    public static function viewRoles(): array
     {
         return ['admin', 'pharmacist'];
     }
 
-    protected static function manageRoles(): array
+    public static function manageRoles(): array
     {
         return [];
     }

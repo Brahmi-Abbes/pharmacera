@@ -20,12 +20,12 @@ class UserResource extends Resource
 {
     use HasRoleAuthorization;
 
-    protected static function viewRoles(): array
+    public static function viewRoles(): array
     {
         return ['admin'];
     }
 
-    protected static function manageRoles(): array
+    public static function manageRoles(): array
     {
         return ['admin'];
     }

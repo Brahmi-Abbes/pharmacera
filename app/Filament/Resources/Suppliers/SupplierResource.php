@@ -20,12 +20,12 @@ class SupplierResource extends Resource
 {
     use HasRoleAuthorization;
 
-    protected static function viewRoles(): array
+    public static function viewRoles(): array
     {
         return ['admin', 'pharmacist'];
     }
 
-    protected static function manageRoles(): array
+    public static function manageRoles(): array
     {
         return ['admin', 'pharmacist'];
     }
