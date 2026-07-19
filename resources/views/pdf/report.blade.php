@@ -31,7 +31,7 @@
 
     <div class="stats">
         <div class="stat">
-            <div class="value">{{ number_format($totalRevenue, 2) }} DZD</div>
+            <div class="value">{{ number_format($totalRevenue, 2) }} {{ $currency }}</div>
             <div class="label">Total Revenue</div>
         </div>
         <div class="stat">
@@ -39,11 +39,11 @@
             <div class="label">Transactions</div>
         </div>
         <div class="stat">
-            <div class="value">{{ number_format($averageSale, 2) }} DZD</div>
+            <div class="value">{{ number_format($averageSale, 2) }} {{ $currency }}</div>
             <div class="label">Average Sale</div>
         </div>
         <div class="stat">
-            <div class="value">{{ number_format($stockValue, 2) }} DZD</div>
+            <div class="value">{{ number_format($stockValue, 2) }} {{ $currency }}</div>
             <div class="label">Stock Value</div>
         </div>
     </div>
@@ -56,7 +56,7 @@
                 <tr>
                     <td>{{ ucfirst($method) }}</td>
                     <td>{{ $data['count'] }}</td>
-                    <td>{{ number_format($data['total'], 2) }} DZD</td>
+                    <td>{{ number_format($data['total'], 2) }} {{ $currency }}</td>
                 </tr>
             @empty
                 <tr><td colspan="3">No sales in this period</td></tr>
@@ -72,7 +72,7 @@
                 <tr>
                     <td>{{ $name }}</td>
                     <td>{{ $data['count'] }}</td>
-                    <td>{{ number_format($data['total'], 2) }} DZD</td>
+                    <td>{{ number_format($data['total'], 2) }} {{ $currency }}</td>
                 </tr>
             @empty
                 <tr><td colspan="3">No sales in this period</td></tr>
@@ -89,7 +89,7 @@
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $item['medicine']?->name ?? 'Deleted medicine' }}</td>
                     <td>{{ $item['quantity'] }}</td>
-                    <td>{{ number_format($item['revenue'], 2) }} DZD</td>
+                    <td>{{ number_format($item['revenue'], 2) }} {{ $currency }}</td>
                 </tr>
             @empty
                 <tr><td colspan="4">No sales in this period</td></tr>
@@ -130,7 +130,7 @@
     </div>
 
     <div class="section">
-        <div class="section-title">Expired Stock — Loss Report ({{ $expired->count() }} batches, {{ number_format($expiredValue, 2) }} DZD)</div>
+        <div class="section-title">Expired Stock — Loss Report ({{ $expired->count() }} batches, {{ number_format($expiredValue, 2) }} {{ $currency }})</div>
         <table>
             <tr><th>Medicine</th><th>Batch Qty</th><th>Expired On</th><th>Value Lost</th></tr>
             @forelse($expired as $batch)
@@ -138,7 +138,7 @@
                     <td>{{ $batch->medicine->name }}</td>
                     <td>{{ $batch->remaining_quantity }}</td>
                     <td class="danger">{{ $batch->expiry_date->format('M j, Y') }}</td>
-                    <td class="danger">{{ number_format($batch->remaining_quantity * $batch->purchase_price, 2) }} DZD</td>
+                    <td class="danger">{{ number_format($batch->remaining_quantity * $batch->purchase_price, 2) }} {{ $currency }}</td>
                 </tr>
             @empty
                 <tr><td colspan="4">No expired stock</td></tr>

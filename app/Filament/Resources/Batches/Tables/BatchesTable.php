@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Batches\Tables;
 
-use App\Filament\Resources\Batches\BatchResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -38,21 +37,25 @@ class BatchesTable
                     ->color(fn ($record) => $record->remaining_quantity <= 0 ? 'danger' : 'success'),
                 TextColumn::make('purchase_price')
                     ->label(__('pharmacy.batch.purchase_price'))
-                    ->money()
+                    ->money(fn () => \App\Models\Setting::currency())
                     ->sortable(),
                 TextColumn::make('expiry_date')
                     ->label(__('pharmacy.batch.expiry_date'))
                     ->date()
                     ->sortable()
                     ->badge()
-                    ->color(fn ($record) => $record->expiry_badge_color),
+                    ->color(fn ($record) => match ($record->expiry_status) {
+                        'expired', 'danger' => 'danger',
+                        'warning' => 'warning',
+                        default => 'success',
+                    }),
                 TextColumn::make('created_at')
-                    ->label(__('pharmacy.common.created_at'))
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('pharmacy.common.updated_at'))
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -76,12 +79,12 @@ class BatchesTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(BatchResource::manageRoles()) ?? false),
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->authorize(fn () => auth()->user()?->hasAnyRole(BatchResource::deleteRoles()) ?? false),
+                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
                 ]),
             ]);
     }

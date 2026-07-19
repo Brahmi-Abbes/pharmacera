@@ -6,6 +6,7 @@ use App\Models\Batch;
 use App\Models\Medicine;
 use App\Models\Sale;
 use App\Models\SaleItem;
+use App\Models\Setting;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Schemas\Components\Utilities\Get;
@@ -172,6 +173,7 @@ class Reports extends Page implements HasForms
         return [
             'start'           => $start,
             'end'             => $end,
+            'currency'        => Setting::currency(),
             'totalRevenue'    => $totalRevenue,
             'totalSales'      => $totalSales,
             'averageSale'     => $totalSales > 0 ? $totalRevenue / $totalSales : 0,

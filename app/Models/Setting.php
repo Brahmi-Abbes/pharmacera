@@ -21,13 +21,16 @@ class Setting extends Model
         ];
     }
 
-    /**
-     * There's only ever one row in this table. This helper always returns
-     * it, creating it with defaults on first use so the app never has to
-     * handle a "settings don't exist yet" case anywhere else.
-     */
+    
     public static function current(): self
     {
         return static::query()->firstOrCreate([]);
+    }
+
+    // Convenience wrapper — most call sites (table columns, form fields,
+    // the PDF report) just want the currency code, not the whole row.
+    public static function currency(): string
+    {
+        return static::current()->currency;
     }
 }

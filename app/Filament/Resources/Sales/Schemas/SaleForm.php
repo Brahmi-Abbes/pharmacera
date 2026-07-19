@@ -150,7 +150,7 @@ class SaleForm
                             ->label(__('pharmacy.sale.unit_price'))
                             ->required()
                             ->numeric()
-                            ->prefix('$')
+                            ->suffix(fn () => \App\Models\Setting::currency())
                             ->live(onBlur: true)
                             ->afterStateUpdated(function (Get $get, Set $set) {
                                 $set('subtotal', round((float) $get('quantity') * (float) $get('unit_price'), 2));
@@ -159,7 +159,7 @@ class SaleForm
                             ->label(__('pharmacy.sale.subtotal'))
                             ->required()
                             ->numeric()
-                            ->prefix('$')
+                            ->suffix(fn () => \App\Models\Setting::currency())
                             ->disabled()
                             ->dehydrated(),
                     ])
@@ -171,7 +171,7 @@ class SaleForm
                     ->label(__('pharmacy.sale.total'))
                     ->required()
                     ->numeric()
-                    ->prefix('$')
+                    ->suffix(fn () => \App\Models\Setting::currency())
                     ->disabled()
                     ->dehydrated(),
             ]);

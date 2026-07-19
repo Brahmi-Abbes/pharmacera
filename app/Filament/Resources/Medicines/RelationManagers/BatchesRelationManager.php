@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Medicines\RelationManagers;
 
-use App\Filament\Resources\Batches\BatchResource;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -23,33 +22,26 @@ class BatchesRelationManager extends RelationManager
         return $schema
             ->components([
                 Select::make('supplier_id')
+                    ->label(__('pharmacy.batch.supplier'))
                     ->relationship('supplier', 'name')
                     ->searchable()
                     ->preload()
                     ->nullable(),
                 TextInput::make('quantity')
+                    ->label(__('pharmacy.batch.quantity'))
                     ->required()
-                    ->numeric()
-                    ->minValue(0)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                        if (blank($get('remaining_quantity'))) {
-                            $set('remaining_quantity', $state);
-                        }
-                    }),
+                    ->numeric(),
                 TextInput::make('remaining_quantity')
+                    ->label(__('pharmacy.batch.remaining_quantity'))
                     ->required()
-                    ->numeric()
-                    ->minValue(0)
-                    ->lte('quantity')
-                    ->validationMessages([
-                        'lte' => 'Remaining quantity cannot be more than the quantity received.',
-                    ]),
+                    ->numeric(),
                 TextInput::make('purchase_price')
+                    ->label(__('pharmacy.batch.purchase_price'))
                     ->required()
                     ->numeric()
-                    ->prefix('DZD '),
+                    ->suffix(fn () => \App\Models\Setting::currency()),
                 DatePicker::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->required(),
             ]);
     }
@@ -60,33 +52,39 @@ class BatchesRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 TextColumn::make('supplier.name')
+                    ->label(__('pharmacy.batch.supplier'))
                     ->searchable()
                     ->sortable()
                     ->placeholder('—'),
                 TextColumn::make('quantity')
+                    ->label(__('pharmacy.batch.quantity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('remaining_quantity')
+                    ->label(__('pharmacy.batch.remaining_quantity'))
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('purchase_price')
-                    ->money()
+                    ->label(__('pharmacy.batch.purchase_price'))
+                    ->money(fn () => \App\Models\Setting::currency())
                     ->sortable(),
                 TextColumn::make('expiry_date')
+                    ->label(__('pharmacy.batch.expiry_date'))
                     ->date()
                     ->sortable()
                     ->badge()
-                    ->color(fn ($record) => $record->expiry_badge_color),
+                    ->color(fn ($record) => match ($record->expiry_status) {
+                        'expired', 'danger' => 'danger',
+                        'warning' => 'warning',
+                        default => 'success',
+                    }),
             ])
             ->headerActions([
-                CreateAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(BatchResource::manageRoles()) ?? false),
+                CreateAction::make(),
             ])
             ->recordActions([
-                EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(BatchResource::manageRoles()) ?? false),
-                DeleteAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(BatchResource::deleteRoles()) ?? false),
+                EditAction::make(),
+                DeleteAction::make(),
             ]);
     }
 }

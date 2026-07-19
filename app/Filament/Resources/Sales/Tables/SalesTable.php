@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Sales\Tables;
 
-use App\Filament\Resources\Sales\SaleResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -29,7 +28,7 @@ class SalesTable
                     ->sortable(),
                 TextColumn::make('total')
                     ->label(__('pharmacy.sale.total'))
-                    ->money()
+                    ->money(fn () => \App\Models\Setting::currency())
                     ->sortable(),
                 TextColumn::make('payment_method')
                     ->label(__('pharmacy.sale.payment_method'))
@@ -48,12 +47,12 @@ class SalesTable
                     })
                     ->searchable(),
                 TextColumn::make('created_at')
-                    ->label(__('pharmacy.common.created_at'))
+                    ->label(__('pharmacy.category.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('pharmacy.common.updated_at'))
+                    ->label(__('pharmacy.category.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -70,12 +69,12 @@ class SalesTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(SaleResource::manageRoles()) ?? false),
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'cashier']) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->authorize(fn () => auth()->user()?->hasAnyRole(SaleResource::deleteRoles()) ?? false),
+                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
                 ]),
             ]);
     }

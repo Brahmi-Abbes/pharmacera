@@ -45,13 +45,13 @@ class MedicineForm
                     ->label(__('pharmacy.medicine.selling_price'))
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->suffix(fn () => \App\Models\Setting::currency()),
                 TextInput::make('purchase_price')
                     ->label(__('pharmacy.medicine.purchase_price'))
                     ->required()
                     ->numeric()
                     ->default(0.0)
-                    ->prefix('$'),
+                    ->suffix(fn () => \App\Models\Setting::currency()),
                 TextInput::make('alert_threshold')
                     ->label(__('pharmacy.medicine.alert_threshold'))
                     ->required()
