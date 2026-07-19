@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Filament\Resources\Users\UserResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -26,15 +27,20 @@ class UsersTable
                 TextColumn::make('roles.name')
                     ->label(__('pharmacy.user.role'))
                     ->badge()
-                    ->formatStateUsing(fn (string $state): string => __('pharmacy.user.role_' . $state))
-                    ->color(fn (string $state): string => match ($state) {
+                    ->formatStateUsing(fn (?string $state): string => $state ? __('pharmacy.user.role_' . $state) : $state)
+                    ->color(fn (?string $state): string => match ($state) {
                         'admin' => 'danger',
                         'pharmacist' => 'info',
                         'cashier' => 'success',
                         default => 'gray',
                     }),
                 TextColumn::make('created_at')
-                    ->label(__('pharmacy.category.created_at'))
+                    ->label(__('pharmacy.common.created_at'))
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->label(__('pharmacy.common.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -47,12 +53,12 @@ class UsersTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(UserResource::manageRoles()) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
+                        ->authorize(fn () => auth()->user()?->hasAnyRole(UserResource::deleteRoles()) ?? false),
                 ]),
             ]);
     }

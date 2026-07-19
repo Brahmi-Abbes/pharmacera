@@ -11,10 +11,7 @@ class ExpiringBatches extends BaseWidget
 {
     protected static ?int $sort = 3;
 
-    protected int|string|array $columnSpan = [
-        'md' => 1,
-        'lg' => 1,
-    ];
+    protected int|string|array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
@@ -36,11 +33,7 @@ class ExpiringBatches extends BaseWidget
                     ->label(__('pharmacy.batch.expiry_date'))
                     ->date()
                     ->badge()
-                    ->color(fn ($record) => match ($record->expiry_status) {
-                        'expired', 'danger' => 'danger',
-                        'warning' => 'warning',
-                        default => 'success',
-                    }),
+                    ->color(fn ($record) => $record->expiry_badge_color),
             ])
             ->paginated([5, 10, 25]);
     }

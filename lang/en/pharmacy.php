@@ -29,6 +29,9 @@ return [
     'category' => [
         'name' => 'Name',
         'medicines_count' => 'Medicines',
+    ],
+
+    'common' => [
         'created_at' => 'Created at',
         'updated_at' => 'Updated at',
     ],

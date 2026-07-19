@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Medicines\Tables;
 
+use App\Filament\Resources\Medicines\MedicineResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -57,12 +58,12 @@ class MedicinesTable
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
-                    ->label(__('pharmacy.category.created_at'))
+                    ->label(__('pharmacy.common.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('pharmacy.category.updated_at'))
+                    ->label(__('pharmacy.common.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -72,12 +73,12 @@ class MedicinesTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false),
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(MedicineResource::manageRoles()) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
+                        ->authorize(fn () => auth()->user()?->hasAnyRole(MedicineResource::deleteRoles()) ?? false),
                 ]),
             ]);
     }

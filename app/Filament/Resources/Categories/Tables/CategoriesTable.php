@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories\Tables;
 
+use App\Filament\Resources\Categories\CategoryResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -23,12 +24,12 @@ class CategoriesTable
                     ->counts('medicines')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label(__('pharmacy.category.created_at'))
+                    ->label(__('pharmacy.common.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('pharmacy.category.updated_at'))
+                    ->label(__('pharmacy.common.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -38,12 +39,12 @@ class CategoriesTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false),
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(CategoryResource::manageRoles()) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
+                        ->authorize(fn () => auth()->user()?->hasAnyRole(CategoryResource::deleteRoles()) ?? false),
                 ]),
             ]);
     }

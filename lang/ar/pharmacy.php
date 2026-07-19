@@ -27,6 +27,9 @@ return [
     'category' => [
         'name' => 'الاسم',
         'medicines_count' => 'عدد الأدوية',
+    ],
+
+    'common' => [
         'created_at' => 'تاريخ الإنشاء',
         'updated_at' => 'تاريخ التعديل',
     ],

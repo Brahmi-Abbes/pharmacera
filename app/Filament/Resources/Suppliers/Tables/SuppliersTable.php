@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Suppliers\Tables;
 
+use App\Filament\Resources\Suppliers\SupplierResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -33,12 +34,12 @@ class SuppliersTable
                     ->counts('batches')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->label(__('pharmacy.category.created_at'))
+                    ->label(__('pharmacy.common.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->label(__('pharmacy.category.updated_at'))
+                    ->label(__('pharmacy.common.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -48,12 +49,12 @@ class SuppliersTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->authorize(fn () => auth()->user()?->hasAnyRole(['admin', 'pharmacist']) ?? false),
+                    ->authorize(fn () => auth()->user()?->hasAnyRole(SupplierResource::manageRoles()) ?? false),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
-                        ->authorize(fn () => auth()->user()?->hasRole('admin') ?? false),
+                        ->authorize(fn () => auth()->user()?->hasAnyRole(SupplierResource::deleteRoles()) ?? false),
                 ]),
             ]);
     }
