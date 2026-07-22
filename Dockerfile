@@ -1,6 +1,6 @@
 FROM php:8.5-fpm
 
-# Install system dependencies PHP needs to talk to MySQL, handle images, etc.
+# Install system dependencies PHP needs to talk to MySQL/Postgres, handle images, etc.
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -8,10 +8,14 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
-    libicu-dev
+    libicu-dev \
+    libpq-dev
 
 # Install the actual PHP extensions your app uses
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
+# pdo_pgsql is the one that was missing — Render's managed database is
+# Postgres (no managed MySQL option), so without this driver Laravel can't
+# connect at all, which is exactly why migrations were exiting with status 1
+RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip intl
 
 # Composer (PHP's package manager) — copied in from its own official image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
