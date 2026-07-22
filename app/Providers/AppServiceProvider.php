@@ -8,6 +8,7 @@ use App\Observers\BatchObserver;
 use App\Observers\SaleItemObserver;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
