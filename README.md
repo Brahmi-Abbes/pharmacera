@@ -3,7 +3,12 @@
 A pharmacy inventory and point-of-sale management system built for small to mid-size pharmacies. Tracks stock down to the batch level, enforces FIFO-aware selling against real expiry dates, and alerts staff before stock runs out or medicine expires.
 
 **Live demo:** https://pharmacera.onrender.com
-**Demo video:** coming soon
+
+**Demo video:** 
+
+https://github.com/user-attachments/assets/bb32e313-59f5-4279-b5c6-559bb3b0d955
+
+
 ## The problem
 
 Small pharmacies frequently track inventory in spreadsheets or paper — no automatic expiry tracking, no protection against overselling a batch, no audit trail of who changed what. Pharmacera solves this with a real admin system: role-based access for owners, pharmacists, and cashiers, race-condition-safe stock deduction, and automatic email alerts the moment stock crosses a low threshold or runs out.
