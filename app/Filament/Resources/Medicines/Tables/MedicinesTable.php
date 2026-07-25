@@ -35,11 +35,11 @@ class MedicinesTable
                     ->searchable(),
                 TextColumn::make('selling_price')
                     ->label(__('pharmacy.medicine.selling_price'))
-                    ->money(fn () => \App\Models\Setting::currency())
+                    ->money(fn () => \App\Models\Setting::current()->currency)
                     ->sortable(),
                 TextColumn::make('purchase_price')
                     ->label(__('pharmacy.medicine.purchase_price'))
-                    ->money(fn () => \App\Models\Setting::currency())
+                    ->money(fn () => \App\Models\Setting::current()->currency)
                     ->sortable(),
                 TextColumn::make('stock_sum')
                     ->label(__('pharmacy.medicine.stock'))

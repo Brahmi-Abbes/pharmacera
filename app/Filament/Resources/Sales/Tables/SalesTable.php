@@ -28,7 +28,7 @@ class SalesTable
                     ->sortable(),
                 TextColumn::make('total')
                     ->label(__('pharmacy.sale.total'))
-                    ->money(fn () => \App\Models\Setting::currency())
+                    ->money(fn () => \App\Models\Setting::current()->currency)
                     ->sortable(),
                 TextColumn::make('payment_method')
                     ->label(__('pharmacy.sale.payment_method'))

@@ -37,7 +37,7 @@ class BatchesTable
                     ->color(fn ($record) => $record->remaining_quantity <= 0 ? 'danger' : 'success'),
                 TextColumn::make('purchase_price')
                     ->label(__('pharmacy.batch.purchase_price'))
-                    ->money(fn () => \App\Models\Setting::currency())
+                    ->money(fn () => \App\Models\Setting::current()->currency)
                     ->sortable(),
                 TextColumn::make('expiry_date')
                     ->label(__('pharmacy.batch.expiry_date'))

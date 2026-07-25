@@ -53,7 +53,7 @@ class BatchForm
                     ->required()
                     ->numeric()
                     ->minValue(0)
-                    ->suffix(fn () => \App\Models\Setting::currency()),
+                    ->suffix(fn () => \App\Models\Setting::current()->currency),
                 DatePicker::make('expiry_date')
                     ->label(__('pharmacy.batch.expiry_date'))
                     ->required()
