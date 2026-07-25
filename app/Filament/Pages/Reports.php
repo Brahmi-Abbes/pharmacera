@@ -173,7 +173,7 @@ class Reports extends Page implements HasForms
         return [
             'start'           => $start,
             'end'             => $end,
-            'currency'        => Setting::currency(),
+            'currency' => Setting::current()->currency,
             'totalRevenue'    => $totalRevenue,
             'totalSales'      => $totalSales,
             'averageSale'     => $totalSales > 0 ? $totalRevenue / $totalSales : 0,
