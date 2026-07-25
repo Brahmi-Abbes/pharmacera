@@ -21,21 +21,8 @@ class Setting extends Model
         ];
     }
 
-    
     public static function current(): self
     {
         return static::query()->firstOrCreate([]);
-    }
-
-    // Convenience wrapper — most call sites (table columns, form fields,
-    // the PDF report) just want the currency code, not the whole row.
-    protected function currency(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                // Put your custom logic here (e.g. returning 'USD', 'DZD', etc.)
-                return $this->attributes['value'] ?? 'DZD';
-            }
-        );
     }
 }
