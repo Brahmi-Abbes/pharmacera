@@ -41,6 +41,8 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+RUN php artisan filament:assets
+
 # Install JS dependencies and actually build the assets — this is the step
 # that was missing entirely before, causing the Vite manifest error
 RUN npm ci && npm run build
